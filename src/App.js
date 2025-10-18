@@ -17,6 +17,9 @@ export default function Portfolio() {
     contact: useRef(null)
   };
 
+  // 🔥 AJOUT POUR GITHUB PAGES
+  const basePath = process.env.PUBLIC_URL;
+
   const scrollToSection = (section) => {
     setActiveSection(section);
     sectionRefs[section].current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -76,7 +79,7 @@ export default function Portfolio() {
         github: "https://github.com/ashler18",
         demo: "https://ashler18.github.io/citations-inspirantes/"
       },
-      preview: "/images/projet-rgaa.png"
+      preview: `${basePath}/images/projet-rgaa.png`
     },
     {
       title: "Site ONG – World Ecology Women",
@@ -87,7 +90,7 @@ export default function Portfolio() {
         github: null,
         demo: "https://www.benin-wecow.org/"
       },
-      preview: "/images/projet-wecow.jpg"
+      preview: `${basePath}/images/projet-wecow.jpg`
     },
     {
       title: "Application To-Do List React",
@@ -98,7 +101,7 @@ export default function Portfolio() {
         github: "https://github.com/ashler18",
         demo: "https://ashler18.github.io/my-todo-app/"
       },
-      preview: "/images/projet-todo.png"
+      preview: `${basePath}/images/projet-todo.png`
     },
     {
       title: "Application N-kû",
@@ -109,7 +112,7 @@ export default function Portfolio() {
         github: null,
         demo: null
       },
-      preview: "/images/logo-N-kû.jpg"
+      preview: `${basePath}/images/logo-N-kû.jpg`
     },
     {
       title: "Site Vitrine React – WIVE",
@@ -120,35 +123,34 @@ export default function Portfolio() {
         github: null,
         demo: "https://wive.fr"
       },
-      preview: "/images/projet-wive-1.png",
-      gallery: ["/images/projet-wive-1.png", "/images/projet-wive-2.png"]
+      preview: `${basePath}/images/projet-wive-1.png`,
+      gallery: [`${basePath}/images/projet-wive-1.png`, `${basePath}/images/projet-wive-2.png`]
     }
   ];
 
+  const skills = [
+    {
+      category: "Langages & Technologies Web",
+      items: ["HTML5 & CSS3", "JavaScript", "TypeScript", "PHP", "MySQL"]
+    },
+    {
+      category: "Frameworks & Bibliothèques",
+      items: ["React (Router, composants)", "Angular", "JavaSpark", "WordPress", "Node.js"]
+    },
+    {
+      category: "Design & UX/UI",
+      items: ["Figma", "Maquettage", "Workflows", "Accessibilité RGAA", "Responsive Design"]
+    },
+    {
+      category: "Outils de développement",
+      items: ["Git / GitHub", "VS Code", "Postman"]
+    },
+    {
+      category: "Systèmes & Suite bureautique",
+      items: ["Windows 10", "Windows Server", "Office 365"]
+    }
+  ];
 
-
-const skills = [
-  {
-    category: "Langages & Technologies Web",
-    items: ["HTML5 & CSS3", "JavaScript", "TypeScript", "PHP", "MySQL"]
-  },
-  {
-    category: "Frameworks & Bibliothèques",
-    items: ["React (Router, composants)", "Angular", "JavaSpark", "WordPress", "Node.js"]
-  },
-  {
-    category: "Design & UX/UI",
-    items: ["Figma", "Maquettage", "Workflows", "Accessibilité RGAA", "Responsive Design"]
-  },
-  {
-    category: "Outils de développement",
-    items: ["Git / GitHub", "VS Code", "Postman"]
-  },
-  {
-    category: "Systèmes & Suite bureautique",
-    items: ["Windows 10", "Windows Server", "Office 365"]
-  }
-];
   const interests = [
     "UI/UX Design", "Accessibilité Web", "Intelligence Artificielle", 
     "Jeux vidéo", "Lecture", "Musique", "Dessin", "Astronomie", "Cuisine"
@@ -272,7 +274,7 @@ const skills = [
         <section className="max-w-6xl mx-auto px-4 py-20" ref={sectionRefs.about} aria-labelledby="hero-title">
           <div className="flex flex-col md:flex-row items-center gap-12">
             <img 
-              src="/images/photo-profil.jpg" 
+              src={`${basePath}/images/photo-profil.jpg`}
               alt="Ashler DELEKE, développeuse web" 
               className="w-48 h-48 rounded-full object-cover shadow-2xl border-4 border-blue-100"
             />
@@ -289,7 +291,7 @@ const skills = [
               </p>
               <div className="flex gap-4 justify-center md:justify-start flex-wrap">
                 <a 
-                  href="/cv-ashler-deleke.pdf" 
+                  href={`${basePath}/cv-ashler-deleke.pdf`}
                   download
                   className="px-6 py-3 bg-blue-900 text-white rounded-lg hover:bg-blue-800 transition-colors flex items-center gap-2 font-semibold focus:outline-none focus:ring-2 focus:ring-blue-900 focus:ring-offset-2"
                   aria-label="Télécharger mon CV au format PDF"
@@ -342,7 +344,7 @@ const skills = [
               doit être accessible à tous, c'est pourquoi je me spécialise dans l'accessibilité web (RGAA) et l'expérience utilisateur.
             </p>
             <p className="text-gray-700 leading-relaxed">
-              Au-delà du code, je suis CEO de N-kû, une entreprise e-commerce au Bénin, et écrivaine à mes heures perdues. 
+              Au-delà du code, je développe N-kû, un projet entrepreneurial de vente en ligne au Bénin, et écrivaine à mes heures perdues. 
               Passionnée d'astronomie, de design et d'intelligence artificielle, j'aime explorer de nouveaux horizons, 
               que ce soit dans le code ou dans les étoiles. ✨
             </p>
@@ -434,7 +436,7 @@ const skills = [
           <div className="space-y-6">
             <article className="bg-white border-2 border-blue-100 rounded-2xl p-8">
               <div className="flex items-center gap-4 mb-4">
-                <img src="/images/logo-N-kû.jpg" alt="N-kû, entreprise e-commerce au Bénin" className="w-20 h-20 rounded-lg object-contain bg-white" />
+                <img src={`${basePath}/images/logo-N-kû.jpg`} alt="N-kû, entreprise e-commerce au Bénin" className="w-20 h-20 rounded-lg object-contain bg-white" />
                 <div>
                   <h3 className="text-3xl font-bold text-blue-950">N-Kû 🛍️</h3>
                   <p className="text-lg text-blue-800">Fondatrice & Créatrice | Bénin</p>
@@ -446,10 +448,10 @@ const skills = [
               
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6" role="list" aria-label="Galerie de produits N-kû">
                 {[
-                  { src: "/images/nku-otaku-1.jpg", alt: "Produits Otaku disponibles chez N-kû" },
-                  { src: "/images/nku-mode-1.jpg", alt: "Articles de mode élégante N-kû" },
-                  { src: "/images/nku-mode-2.jpg", alt: "Collection mode N-kû" },
-                  { src: "/images/nku-otaku-2.jpg", alt: "Accessoires et articles Otaku N-kû" }
+                  { src: `${basePath}/images/nku-otaku-1.jpg`, alt: "Produits Otaku disponibles chez N-kû" },
+                  { src: `${basePath}/images/nku-mode-1.jpg`, alt: "Articles de mode élégante N-kû" },
+                  { src: `${basePath}/images/nku-mode-2.jpg`, alt: "Collection mode N-kû" },
+                  { src: `${basePath}/images/nku-otaku-2.jpg`, alt: "Accessoires et articles Otaku N-kû" }
                 ].map((img, idx) => (
                   <img 
                     key={idx}
@@ -472,7 +474,7 @@ const skills = [
 
             <article className="bg-white border-2 border-blue-100 rounded-2xl p-8">
               <div className="flex items-center gap-4 mb-4">
-                <img src="/images/c-create.jpg" alt="C'create N-kû, services créatifs et événements" className="w-20 h-20 rounded-lg object-cover" />
+                <img src={`${basePath}/images/c-create.jpg`} alt="C'create N-kû, services créatifs et événements" className="w-20 h-20 rounded-lg object-cover" />
                 <div>
                   <h3 className="text-3xl font-bold text-blue-950">C'create N-Kû 🎬</h3>
                   <p className="text-lg text-blue-800">Filiale de N-Kû | Services créatifs</p>
@@ -493,35 +495,35 @@ const skills = [
                 <div className="relative group" role="listitem">
                   <video 
                     ref={(el) => (videoRefs.current[0] = el)}
-                    src="/images/ccreate-video1.mp4" 
+                    src={`${basePath}/images/ccreate-video1.mp4`}
                     className="w-full aspect-video object-contain bg-black rounded-lg shadow-md"
                     controls
-                    poster="/images/c-create.jpg"
+                    poster={`${basePath}/images/c-create.jpg`}
                     onPlay={() => handleVideoPlay(0)}
                     aria-label="Vidéo de présentation des montages C'create, partie 1"
                   />
                 </div>
                 <img 
-                  src="/images/service create.jpg" 
+                  src={`${basePath}/images/service create.jpg`}
                   alt="Services créatifs proposés par C'create" 
                   className="w-full aspect-video object-cover rounded-lg shadow-md hover:shadow-xl transition-shadow cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-900"
-                  onClick={() => openLightbox("/images/service create.jpg")}
+                  onClick={() => openLightbox(`${basePath}/images/service create.jpg`)}
                   role="listitem"
                   tabIndex={0}
                   onKeyPress={(e) => {
                     if (e.key === 'Enter' || e.key === ' ') {
                       e.preventDefault();
-                      openLightbox("/images/service create.jpg");
+                      openLightbox(`${basePath}/images/service create.jpg`);
                     }
                   }}
                 />
                 <div className="relative group" role="listitem">
                   <video 
                     ref={(el) => (videoRefs.current[1] = el)}
-                    src="/images/ccreate-video2.mp4" 
+                    src={`${basePath}/images/ccreate-video2.mp4`}
                     className="w-full aspect-video object-contain bg-black rounded-lg shadow-md"
                     controls
-                    poster="/images/c-create.jpg"
+                    poster={`${basePath}/images/c-create.jpg`}
                     onPlay={() => handleVideoPlay(1)}
                     aria-label="Vidéo de présentation des montages C'create, partie 2"
                   />
@@ -611,7 +613,7 @@ const skills = [
             </p>
             <div className="flex justify-center gap-4 flex-wrap">
               <a 
-                  href="mailto:ashler.deleke@edu.igensia.com"
+                href="mailto:ashler.deleke@edu.igensia.com"
                 className="px-8 py-4 bg-white text-blue-900 rounded-lg font-semibold hover:bg-blue-50 transition-colors focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-blue-900"
                 aria-label="M'envoyer un email pour me contacter"
               >
