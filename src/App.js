@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Github, Linkedin, Mail, ExternalLink, Star, Sparkles, BookOpen, Code, Briefcase, Heart, Download, X, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Github, Linkedin, Mail, ExternalLink, Star, Sparkles, BookOpen, Code, Briefcase, Heart, Download, X, ChevronLeft, ChevronRight, Menu } from 'lucide-react';
 
 export default function Portfolio() {
   const [activeSection, setActiveSection] = useState('about');
@@ -7,6 +7,8 @@ export default function Portfolio() {
   const [currentImage, setCurrentImage] = useState('');
   const [currentGallery, setCurrentGallery] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [cvModalOpen, setCvModalOpen] = useState(false);
   
   const videoRefs = useRef([]);
   const sectionRefs = {
@@ -17,12 +19,14 @@ export default function Portfolio() {
     contact: useRef(null)
   };
 
-  // 🔥 AJOUT POUR GITHUB PAGES
-  const basePath = process.env.PUBLIC_URL;
-
   const scrollToSection = (section) => {
     setActiveSection(section);
-    sectionRefs[section].current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    setMobileMenuOpen(false);
+    const element = sectionRefs[section].current;
+    if (element) {
+      const offsetTop = element.offsetTop - 80;
+      window.scrollTo({ top: offsetTop, behavior: 'smooth' });
+    }
   };
 
   const handleVideoPlay = (index) => {
@@ -67,6 +71,28 @@ export default function Portfolio() {
   useEffect(() => {
     document.title = "Portfolio - Ashler DELEKE M. N. | Développeuse Web";
     document.documentElement.lang = "fr";
+
+    const handleScroll = () => {
+      const sections = ['about', 'projects', 'business', 'skills', 'contact'];
+      const scrollPosition = window.scrollY + 150;
+
+      for (let i = sections.length - 1; i >= 0; i--) {
+        const section = sections[i];
+        const element = sectionRefs[section].current;
+        if (element) {
+          const offsetTop = element.offsetTop;
+          if (scrollPosition >= offsetTop) {
+            setActiveSection(section);
+            break;
+          }
+        }
+      }
+    };
+
+    handleScroll();
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const projects = [
@@ -79,7 +105,7 @@ export default function Portfolio() {
         github: "https://github.com/ashler18",
         demo: "https://ashler18.github.io/citations-inspirantes/"
       },
-      preview: `${basePath}/images/projet-rgaa.png`
+      preview: `${process.env.PUBLIC_URL}/images/projet-rgaa.png`
     },
     {
       title: "Site ONG – World Ecology Women",
@@ -90,7 +116,7 @@ export default function Portfolio() {
         github: null,
         demo: "https://www.benin-wecow.org/"
       },
-      preview: `${basePath}/images/projet-wecow.jpg`
+      preview: `${process.env.PUBLIC_URL}/images/projet-wecow.jpg`
     },
     {
       title: "Application To-Do List React",
@@ -101,7 +127,7 @@ export default function Portfolio() {
         github: "https://github.com/ashler18",
         demo: "https://ashler18.github.io/my-todo-app/"
       },
-      preview: `${basePath}/images/projet-todo.png`
+      preview: `${process.env.PUBLIC_URL}/images/projet-todo.png`
     },
     {
       title: "Application N-kû",
@@ -112,7 +138,7 @@ export default function Portfolio() {
         github: null,
         demo: null
       },
-      preview: `${basePath}/images/logo-N-kû.jpg`
+      preview: `${process.env.PUBLIC_URL}/images/logo-N-ku.jpg`
     },
     {
       title: "Site Vitrine React – WIVE",
@@ -123,8 +149,8 @@ export default function Portfolio() {
         github: null,
         demo: "https://wive.fr"
       },
-      preview: `${basePath}/images/projet-wive-1.png`,
-      gallery: [`${basePath}/images/projet-wive-1.png`, `${basePath}/images/projet-wive-2.png`]
+      preview: `${process.env.PUBLIC_URL}/images/projet-wive-1.png`,
+      gallery: [`${process.env.PUBLIC_URL}/images/projet-wive-1.png`, `${process.env.PUBLIC_URL}/images/projet-wive-2.png`]
     }
   ];
 
@@ -158,7 +184,6 @@ export default function Portfolio() {
 
   return (
     <div className="min-h-screen bg-white text-gray-800">
-      {/* Skip Link pour accessibilité */}
       <a 
         href="#main-content" 
         className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-blue-900 focus:text-white focus:rounded-lg"
@@ -166,10 +191,56 @@ export default function Portfolio() {
         Aller au contenu principal
       </a>
 
-      {/* Lightbox Modal */}
+      {cvModalOpen && (
+        <div 
+          className="fixed inset-0 z-50 bg-black/90 flex items-center justify-center p-2 sm:p-4" 
+          onClick={() => setCvModalOpen(false)}
+          role="dialog"
+          aria-modal="true"
+          aria-label="Prévisualisation du CV"
+        >
+          <div className="bg-white rounded-xl sm:rounded-2xl w-full max-w-4xl max-h-[95vh] sm:max-h-[90vh] overflow-hidden flex flex-col" onClick={(e) => e.stopPropagation()}>
+            <div className="flex justify-between items-center p-3 sm:p-4 md:p-6 border-b border-gray-200">
+              <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-blue-950">Mon CV</h3>
+              <button 
+                onClick={() => setCvModalOpen(false)}
+                className="p-2 text-gray-600 hover:text-blue-900 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-900 rounded-lg"
+                aria-label="Fermer"
+              >
+                <X className="w-5 h-5 sm:w-6 sm:h-6" />
+              </button>
+            </div>
+            
+            <div className="flex-1 overflow-auto p-2 sm:p-4 md:p-6 bg-gray-50">
+              <iframe
+                src={`${process.env.PUBLIC_URL}/cv-ashler-deleke.pdf`}
+                className="w-full h-[400px] sm:h-[500px] md:h-[600px] border-0 rounded-lg bg-white"
+                title="Prévisualisation du CV"
+              />
+            </div>
+
+            <div className="p-3 sm:p-4 md:p-6 border-t border-gray-200 bg-white flex flex-col sm:flex-row justify-center gap-2 sm:gap-3">
+              <a 
+                href={`${process.env.PUBLIC_URL}/cv-ashler-deleke.pdf`}
+                download="CV-Ashler-DELEKE.pdf"
+                className="px-4 py-2 sm:px-6 sm:py-3 bg-blue-900 text-white rounded-lg hover:bg-blue-800 transition-colors flex items-center justify-center gap-2 font-semibold focus:outline-none focus:ring-2 focus:ring-blue-900 text-sm sm:text-base"
+              >
+                <Download className="w-4 h-4 sm:w-5 sm:h-5" /> Télécharger le CV
+              </a>
+              <button 
+                onClick={() => setCvModalOpen(false)}
+                className="px-4 py-2 sm:px-6 sm:py-3 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300 transition-colors font-semibold focus:outline-none focus:ring-2 focus:ring-gray-400 text-sm sm:text-base"
+              >
+                Fermer
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {lightboxOpen && (
         <div 
-          className="fixed inset-0 z-50 bg-black/90 flex items-center justify-center" 
+          className="fixed inset-0 z-50 bg-black/90 flex items-center justify-center p-2" 
           onClick={closeLightbox}
           role="dialog"
           aria-modal="true"
@@ -177,27 +248,27 @@ export default function Portfolio() {
         >
           <button 
             onClick={closeLightbox}
-            className="absolute top-4 right-4 text-white hover:text-gray-300 transition-colors focus:outline-none focus:ring-2 focus:ring-white rounded-lg p-2"
+            className="absolute top-2 right-2 sm:top-4 sm:right-4 text-white hover:text-gray-300 transition-colors focus:outline-none focus:ring-2 focus:ring-white rounded-lg p-1 sm:p-2 z-10"
             aria-label="Fermer la visionneuse"
           >
-            <X className="w-8 h-8" />
+            <X className="w-6 h-6 sm:w-8 sm:h-8" />
           </button>
           
           {currentGallery.length > 1 && (
             <>
               <button 
                 onClick={(e) => { e.stopPropagation(); prevImage(); }}
-                className="absolute left-4 text-white hover:text-gray-300 transition-colors focus:outline-none focus:ring-2 focus:ring-white rounded-lg p-2"
+                className="absolute left-1 sm:left-2 md:left-4 text-white hover:text-gray-300 transition-colors focus:outline-none focus:ring-2 focus:ring-white rounded-lg p-1 sm:p-2 bg-black/50"
                 aria-label="Image précédente"
               >
-                <ChevronLeft className="w-12 h-12" />
+                <ChevronLeft className="w-6 h-6 sm:w-8 sm:h-8 md:w-12 md:h-12" />
               </button>
               <button 
                 onClick={(e) => { e.stopPropagation(); nextImage(); }}
-                className="absolute right-4 text-white hover:text-gray-300 transition-colors focus:outline-none focus:ring-2 focus:ring-white rounded-lg p-2"
+                className="absolute right-1 sm:right-2 md:right-4 text-white hover:text-gray-300 transition-colors focus:outline-none focus:ring-2 focus:ring-white rounded-lg p-1 sm:p-2 bg-black/50"
                 aria-label="Image suivante"
               >
-                <ChevronRight className="w-12 h-12" />
+                <ChevronRight className="w-6 h-6 sm:w-8 sm:h-8 md:w-12 md:h-12" />
               </button>
             </>
           )}
@@ -205,25 +276,24 @@ export default function Portfolio() {
           <img 
             src={currentImage} 
             alt="Agrandissement du projet sélectionné" 
-            className="max-w-[90vw] max-h-[90vh] object-contain"
+            className="max-w-[95vw] max-h-[85vh] sm:max-w-[90vw] sm:max-h-[80vh] md:max-h-[90vh] object-contain"
             onClick={(e) => e.stopPropagation()}
           />
           
           {currentGallery.length > 1 && (
-            <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 text-white text-lg" aria-live="polite">
+            <div className="absolute bottom-2 sm:bottom-4 left-1/2 transform -translate-x-1/2 text-white text-xs sm:text-sm md:text-lg bg-black/50 px-2 py-1 sm:px-3 sm:py-1 md:px-4 md:py-2 rounded-full" aria-live="polite">
               {currentIndex + 1} sur {currentGallery.length}
             </div>
           )}
         </div>
       )}
 
-      {/* Starry Background Effect */}
       <div className="fixed inset-0 pointer-events-none overflow-hidden" aria-hidden="true">
         <div className="absolute inset-0 bg-gradient-to-b from-blue-950/5 via-transparent to-blue-950/10"></div>
-        {[...Array(50)].map((_, i) => (
+        {[...Array(30)].map((_, i) => (
           <div
             key={i}
-            className="absolute w-1 h-1 bg-blue-900/20 rounded-full animate-pulse"
+            className="absolute w-1 h-1 bg-blue-900/20 rounded-full animate-pulse hidden sm:block"
             style={{
               left: `${Math.random() * 100}%`,
               top: `${Math.random() * 100}%`,
@@ -234,15 +304,15 @@ export default function Portfolio() {
         ))}
       </div>
 
-      {/* Navigation */}
       <nav className="sticky top-0 z-50 bg-white/95 backdrop-blur-sm border-b border-blue-900/10 shadow-sm" role="navigation" aria-label="Navigation principale">
-        <div className="max-w-6xl mx-auto px-4 py-4">
+        <div className="max-w-6xl mx-auto px-3 sm:px-4 py-3 sm:py-4">
           <div className="flex justify-between items-center">
             <div className="flex items-center gap-2">
-              <Sparkles className="w-6 h-6 text-blue-900" aria-hidden="true" />
-              <span className="text-xl font-bold text-blue-950">Ashler DELEKE</span>
+              <Sparkles className="w-5 h-5 sm:w-6 sm:h-6 text-blue-900" aria-hidden="true" />
+              <span className="text-base sm:text-lg md:text-xl font-bold text-blue-950">Ashler DELEKE</span>
             </div>
-            <div className="flex gap-6">
+            
+            <div className="hidden lg:flex gap-4 xl:gap-6">
               {[
                 { key: 'about', label: 'À propos' },
                 { key: 'projects', label: 'Projets' },
@@ -253,9 +323,9 @@ export default function Portfolio() {
                 <button
                   key={section.key}
                   onClick={() => scrollToSection(section.key)}
-                  className={`capitalize transition-colors focus:outline-none focus:ring-2 focus:ring-blue-900 rounded px-2 py-1 ${
+                  className={`text-sm xl:text-base transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-900 rounded px-2 py-1 ${
                     activeSection === section.key 
-                      ? 'text-blue-900 font-semibold' 
+                      ? 'text-blue-900 font-bold border-b-2 border-blue-900' 
                       : 'text-gray-600 hover:text-blue-900'
                   }`}
                   aria-label={`Aller à la section ${section.label}`}
@@ -265,85 +335,116 @@ export default function Portfolio() {
                 </button>
               ))}
             </div>
+
+            <button 
+              className="lg:hidden p-2 text-blue-900 focus:outline-none focus:ring-2 focus:ring-blue-900 rounded"
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              aria-label="Menu de navigation"
+              aria-expanded={mobileMenuOpen}
+            >
+              {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+            </button>
           </div>
+
+          {mobileMenuOpen && (
+            <div className="lg:hidden mt-3 pb-3 space-y-2">
+              {[
+                { key: 'about', label: 'À propos' },
+                { key: 'projects', label: 'Projets' },
+                { key: 'business', label: 'Entreprise' },
+                { key: 'skills', label: 'Compétences' },
+                { key: 'contact', label: 'Contact' }
+              ].map((section) => (
+                <button
+                  key={section.key}
+                  onClick={() => scrollToSection(section.key)}
+                  className={`w-full text-left px-3 py-2 rounded-lg transition-colors text-sm sm:text-base ${
+                    activeSection === section.key 
+                      ? 'bg-blue-900 text-white font-semibold' 
+                      : 'text-gray-600 hover:bg-blue-50'
+                  }`}
+                  aria-label={`Aller à la section ${section.label}`}
+                >
+                  {section.label}
+                </button>
+              ))}
+            </div>
+          )}
         </div>
       </nav>
 
       <main id="main-content" className="relative z-10">
-        {/* Hero Section */}
-        <section className="max-w-6xl mx-auto px-4 py-20" ref={sectionRefs.about} aria-labelledby="hero-title">
-          <div className="flex flex-col md:flex-row items-center gap-12">
+        <section className="max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-12 md:py-16 lg:py-20" ref={sectionRefs.about} aria-labelledby="hero-title">
+          <div className="flex flex-col md:flex-row items-center gap-6 sm:gap-8 md:gap-12">
             <img 
-              src={`${basePath}/images/photo-profil.jpg`}
+              src={`${process.env.PUBLIC_URL}/images/photo-profil.jpg`}
               alt="Ashler DELEKE, développeuse web" 
-              className="w-48 h-48 rounded-full object-cover shadow-2xl border-4 border-blue-100"
+              className="w-28 h-28 sm:w-32 sm:h-32 md:w-40 md:h-40 lg:w-48 lg:h-48 rounded-full object-cover shadow-2xl border-4 border-blue-100"
             />
             <div className="flex-1 text-center md:text-left">
-              <h1 id="hero-title" className="text-5xl font-bold text-blue-950 mb-4">
+              <h1 id="hero-title" className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-blue-950 mb-2 sm:mb-3 md:mb-4">
                 Ashler DELEKE M. N.
               </h1>
-              <p className="text-2xl text-blue-900 mb-4">
+              <p className="text-lg sm:text-xl md:text-2xl text-blue-900 mb-2 sm:mb-3 md:mb-4">
                 Conceptrice Développeuse d'Applications
               </p>
-              <p className="text-lg text-gray-600 mb-6 max-w-2xl">
+              <p className="text-sm sm:text-base md:text-lg text-gray-600 mb-4 sm:mb-5 md:mb-6 max-w-2xl mx-auto md:mx-0">
                 Étudiante passionnée à IPI-Lyon, créant des expériences numériques accessibles et innovantes. 
                 Entrepreneure, développeuse et écrivaine, je transforme les idées en réalité.
               </p>
-              <div className="flex gap-4 justify-center md:justify-start flex-wrap">
-                <a 
-                  href={`${basePath}/cv-ashler-deleke.pdf`}
-                  download
-                  className="px-6 py-3 bg-blue-900 text-white rounded-lg hover:bg-blue-800 transition-colors flex items-center gap-2 font-semibold focus:outline-none focus:ring-2 focus:ring-blue-900 focus:ring-offset-2"
-                  aria-label="Télécharger mon CV au format PDF"
+              <div className="flex gap-2 sm:gap-3 md:gap-4 justify-center md:justify-start flex-wrap">
+                <button
+                  onClick={() => setCvModalOpen(true)}
+                  className="px-3 py-2 sm:px-4 sm:py-2 md:px-6 md:py-3 bg-blue-900 text-white rounded-lg hover:bg-blue-800 transition-colors flex items-center gap-2 text-xs sm:text-sm md:text-base font-semibold focus:outline-none focus:ring-2 focus:ring-blue-900 focus:ring-offset-2"
+                  aria-label="Voir mon CV"
                 >
-                  <Download className="w-5 h-5" aria-hidden="true" /> Télécharger mon CV
-                </a>
+                  <Download className="w-3 h-3 sm:w-4 sm:h-4 md:w-5 md:h-5" aria-hidden="true" /> Voir mon CV
+                </button>
                 <a 
                   href="https://github.com/ashler18" 
                   target="_blank" 
                   rel="noopener noreferrer" 
-                  className="p-3 bg-blue-900 text-white rounded-full hover:bg-blue-800 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-900 focus:ring-offset-2"
+                  className="p-2 sm:p-2.5 md:p-3 bg-blue-900 text-white rounded-full hover:bg-blue-800 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-900 focus:ring-offset-2"
                   aria-label="Voir mon profil GitHub (Ouvre dans un nouvel onglet)"
                 >
-                  <Github className="w-5 h-5" aria-hidden="true" />
+                  <Github className="w-4 h-4 sm:w-4 sm:h-4 md:w-5 md:h-5" aria-hidden="true" />
                 </a>
                 <a 
                   href="https://www.linkedin.com/in/ashler/" 
                   target="_blank" 
                   rel="noopener noreferrer"
-                  className="p-3 bg-blue-900 text-white rounded-full hover:bg-blue-800 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-900 focus:ring-offset-2"
+                  className="p-2 sm:p-2.5 md:p-3 bg-blue-900 text-white rounded-full hover:bg-blue-800 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-900 focus:ring-offset-2"
                   aria-label="Voir mon profil LinkedIn (Ouvre dans un nouvel onglet)"
                 >
-                  <Linkedin className="w-5 h-5" aria-hidden="true" />
+                  <Linkedin className="w-4 h-4 sm:w-4 sm:h-4 md:w-5 md:h-5" aria-hidden="true" />
                 </a>
                 <a 
                   href="mailto:ashler.deleke@edu.igensia.com"
-                  className="p-3 bg-blue-900 text-white rounded-full hover:bg-blue-800 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-900 focus:ring-offset-2"
+                  className="p-2 sm:p-2.5 md:p-3 bg-blue-900 text-white rounded-full hover:bg-blue-800 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-900 focus:ring-offset-2"
                   aria-label="M'envoyer un email"
                 >
-                  <Mail className="w-5 h-5" aria-hidden="true" />
+                  <Mail className="w-4 h-4 sm:w-4 sm:h-4 md:w-5 md:h-5" aria-hidden="true" />
                 </a>
               </div>
             </div>
           </div>
         </section>
 
-        {/* About Section */}
-        <section className="max-w-6xl mx-auto px-4 py-16 bg-gradient-to-r from-blue-50 to-white rounded-3xl my-8" aria-labelledby="about-title">
-          <div className="flex items-center gap-3 mb-8">
-            <Star className="w-8 h-8 text-blue-900" aria-hidden="true" />
-            <h2 id="about-title" className="text-4xl font-bold text-blue-950">À propos de moi</h2>
+        <section className="max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-12 md:py-16 bg-gradient-to-r from-blue-50 to-white rounded-2xl sm:rounded-3xl my-4 sm:my-6 md:my-8" aria-labelledby="about-title">
+          <div className="flex items-center gap-2 sm:gap-3 mb-4 sm:mb-6 md:mb-8">
+            <Star className="w-5 h-5 sm:w-6 sm:h-6 md:w-8 md:h-8 text-blue-900" aria-hidden="true" />
+            <h2 id="about-title" className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-blue-950">À propos de moi</h2>
           </div>
-          <div className="prose prose-lg max-w-none">
-            <p className="text-gray-700 leading-relaxed mb-4">
+          <div className="prose prose-sm sm:prose-base md:prose-lg max-w-none">
+            <p className="text-gray-700 leading-relaxed mb-3 sm:mb-4 text-sm sm:text-base">
               Actuellement étudiante en <strong>Concepteur Développeur d'Application Numérique</strong> à IPI-Lyon, 
               je suis passionnée par la création d'expériences numériques qui allient esthétique, accessibilité et innovation.
             </p>
-            <p className="text-gray-700 leading-relaxed mb-4">
+            <p className="text-gray-700 leading-relaxed mb-3 sm:mb-4 text-sm sm:text-base">
               Mon parcours combine développement web, design UI/UX et entrepreneuriat. Je crois fermement que la technologie 
               doit être accessible à tous, c'est pourquoi je me spécialise dans l'accessibilité web (RGAA) et l'expérience utilisateur.
             </p>
-            <p className="text-gray-700 leading-relaxed">
+            <p className="text-gray-700 leading-relaxed text-sm sm:text-base">
               Au-delà du code, je développe N-kû, un projet entrepreneurial de vente en ligne au Bénin, et écrivaine à mes heures perdues. 
               Passionnée d'astronomie, de design et d'intelligence artificielle, j'aime explorer de nouveaux horizons, 
               que ce soit dans le code ou dans les étoiles. ✨
@@ -351,15 +452,14 @@ export default function Portfolio() {
           </div>
         </section>
 
-        {/* Projects Section */}
-        <section className="max-w-6xl mx-auto px-4 py-16" ref={sectionRefs.projects} aria-labelledby="projects-title">
-          <div className="flex items-center gap-3 mb-8">
-            <Code className="w-8 h-8 text-blue-900" aria-hidden="true" />
-            <h2 id="projects-title" className="text-4xl font-bold text-blue-950">Mes Projets</h2>
+        <section className="max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-12 md:py-16" ref={sectionRefs.projects} aria-labelledby="projects-title">
+          <div className="flex items-center gap-2 sm:gap-3 mb-4 sm:mb-6 md:mb-8">
+            <Code className="w-5 h-5 sm:w-6 sm:h-6 md:w-8 md:h-8 text-blue-900" aria-hidden="true" />
+            <h2 id="projects-title" className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-blue-950">Mes Projets</h2>
           </div>
-          <div className="grid md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-5 md:gap-6">
             {projects.map((project, index) => (
-              <article key={index} className="bg-white border-2 border-blue-100 rounded-2xl overflow-hidden hover:shadow-xl transition-all hover:-translate-y-1">
+              <article key={index} className="bg-white border-2 border-blue-100 rounded-xl sm:rounded-2xl overflow-hidden hover:shadow-xl transition-all hover:-translate-y-1">
                 <div 
                   className="relative cursor-pointer group"
                   onClick={() => openLightbox(project.preview, project.gallery || [project.preview])}
@@ -376,36 +476,36 @@ export default function Portfolio() {
                   <img 
                     src={project.preview} 
                     alt={`Projet ${project.title}`}
-                    className="w-full h-48 object-cover"
+                    className="w-full h-40 sm:h-48 object-cover object-top"
                   />
                   <div className="absolute inset-0 bg-blue-900/0 group-hover:bg-blue-900/20 transition-colors flex items-center justify-center">
-                    <span className="text-white opacity-0 group-hover:opacity-100 transition-opacity text-lg font-semibold">
+                    <span className="text-white opacity-0 group-hover:opacity-100 transition-opacity text-xs sm:text-sm md:text-base lg:text-lg font-semibold px-3 sm:px-4 text-center">
                       🔍 Cliquez pour agrandir {project.gallery && project.gallery.length > 1 ? `(${project.gallery.length} images)` : ''}
                     </span>
                   </div>
                 </div>
                 
-                <div className="p-6">
-                  <h3 className="text-2xl font-bold text-blue-950 mb-2">{project.title}</h3>
-                  <p className="text-sm text-blue-700 mb-3">{project.period}</p>
-                  <p className="text-gray-600 mb-4">{project.description}</p>
-                  <div className="flex flex-wrap gap-2 mb-4" role="list" aria-label="Technologies utilisées">
+                <div className="p-3 sm:p-4 md:p-6">
+                  <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-blue-950 mb-1 sm:mb-2">{project.title}</h3>
+                  <p className="text-xs sm:text-sm text-blue-700 mb-2 md:mb-3">{project.period}</p>
+                  <p className="text-xs sm:text-sm md:text-base text-gray-600 mb-2 sm:mb-3 md:mb-4">{project.description}</p>
+                  <div className="flex flex-wrap gap-1.5 sm:gap-2 mb-2 sm:mb-3 md:mb-4" role="list" aria-label="Technologies utilisées">
                     {project.tech.map((tech, i) => (
-                      <span key={i} className="px-3 py-1 bg-blue-50 text-blue-900 text-sm rounded-full" role="listitem">
+                      <span key={i} className="px-2 py-0.5 sm:px-2 sm:py-1 md:px-3 md:py-1 bg-blue-50 text-blue-900 text-xs sm:text-sm rounded-full" role="listitem">
                         {tech}
                       </span>
                     ))}
                   </div>
-                  <div className="flex gap-3">
+                  <div className="flex gap-2 sm:gap-3 text-xs sm:text-sm md:text-base flex-wrap">
                     {project.links.github && (
                       <a 
                         href={project.links.github} 
                         target="_blank" 
                         rel="noopener noreferrer"
-                        className="flex items-center gap-2 text-blue-900 hover:text-blue-700 transition-colors font-semibold focus:outline-none focus:ring-2 focus:ring-blue-900 rounded px-2 py-1"
+                        className="flex items-center gap-1 sm:gap-2 text-blue-900 hover:text-blue-700 transition-colors font-semibold focus:outline-none focus:ring-2 focus:ring-blue-900 rounded px-2 py-1"
                         aria-label={`Voir le code source de ${project.title} sur GitHub (Ouvre dans un nouvel onglet)`}
                       >
-                        <Github className="w-5 h-5" aria-hidden="true" /> GitHub
+                        <Github className="w-4 h-4 sm:w-5 sm:h-5" aria-hidden="true" /> GitHub
                       </a>
                     )}
                     {project.links.demo && (
@@ -413,10 +513,10 @@ export default function Portfolio() {
                         href={project.links.demo} 
                         target="_blank" 
                         rel="noopener noreferrer"
-                        className="flex items-center gap-2 text-blue-900 hover:text-blue-700 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-900 rounded px-2 py-1"
+                        className="flex items-center gap-1 sm:gap-2 text-blue-900 hover:text-blue-700 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-900 rounded px-2 py-1"
                         aria-label={`Voir le site en ligne de ${project.title} (Ouvre dans un nouvel onglet)`}
                       >
-                        <ExternalLink className="w-4 h-4" aria-hidden="true" /> Voir le site
+                        <ExternalLink className="w-3 h-3 sm:w-4 sm:h-4" aria-hidden="true" /> Voir le site
                       </a>
                     )}
                   </div>
@@ -426,32 +526,31 @@ export default function Portfolio() {
           </div>
         </section>
 
-        {/* Business Section */}
-        <section className="max-w-6xl mx-auto px-4 py-16 bg-gradient-to-l from-blue-50 to-white rounded-3xl my-8" ref={sectionRefs.business} aria-labelledby="business-title">
-          <div className="flex items-center gap-3 mb-8">
-            <Briefcase className="w-8 h-8 text-blue-900" aria-hidden="true" />
-            <h2 id="business-title" className="text-4xl font-bold text-blue-950">Mon Aventure Entrepreneuriale</h2>
+        <section className="max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-12 md:py-16 bg-gradient-to-l from-blue-50 to-white rounded-2xl sm:rounded-3xl my-4 sm:my-6 md:my-8" ref={sectionRefs.business} aria-labelledby="business-title">
+          <div className="flex items-center gap-2 sm:gap-3 mb-4 sm:mb-6 md:mb-8">
+            <Briefcase className="w-5 h-5 sm:w-6 sm:h-6 md:w-8 md:h-8 text-blue-900" aria-hidden="true" />
+            <h2 id="business-title" className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-blue-950">Mon Aventure Entrepreneuriale</h2>
           </div>
           
-          <div className="space-y-6">
-            <article className="bg-white border-2 border-blue-100 rounded-2xl p-8">
-              <div className="flex items-center gap-4 mb-4">
-                <img src={`${basePath}/images/logo-N-kû.jpg`} alt="N-kû, entreprise e-commerce au Bénin" className="w-20 h-20 rounded-lg object-contain bg-white" />
+          <div className="space-y-4 sm:space-y-6">
+            <article className="bg-white border-2 border-blue-100 rounded-xl sm:rounded-2xl p-4 sm:p-6 md:p-8">
+              <div className="flex items-center gap-2 sm:gap-3 md:gap-4 mb-2 sm:mb-3 md:mb-4">
+                <img src={`${process.env.PUBLIC_URL}/images/logo-N-ku.jpg`} alt="N-kû, entreprise e-commerce au Bénin" className="w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20 rounded-lg object-contain bg-white" />
                 <div>
-                  <h3 className="text-3xl font-bold text-blue-950">N-Kû 🛍️</h3>
-                  <p className="text-lg text-blue-800">Fondatrice & Créatrice | Bénin</p>
+                  <h3 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold text-blue-950">N-Kû 🛍️</h3>
+                  <p className="text-sm sm:text-base md:text-lg text-blue-800">Fondatrice & Créatrice | Bénin</p>
                 </div>
               </div>
-              <p className="text-gray-700 leading-relaxed mb-6">
+              <p className="text-xs sm:text-sm md:text-base text-gray-700 leading-relaxed mb-3 sm:mb-4 md:mb-6">
                 N-kû est mon projet entrepreneurial e-commerce au Bénin, où je propose des produits diversifiés via WhatsApp pour le moment. Une aventure qui allie passion du commerce et apprentissage de l'entrepreneuriat.
               </p>
               
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6" role="list" aria-label="Galerie de produits N-kû">
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-3 md:gap-4 mt-4 sm:mt-6" role="list" aria-label="Galerie de produits N-kû">
                 {[
-                  { src: `${basePath}/images/nku-otaku-1.jpg`, alt: "Produits Otaku disponibles chez N-kû" },
-                  { src: `${basePath}/images/nku-mode-1.jpg`, alt: "Articles de mode élégante N-kû" },
-                  { src: `${basePath}/images/nku-mode-2.jpg`, alt: "Collection mode N-kû" },
-                  { src: `${basePath}/images/nku-otaku-2.jpg`, alt: "Accessoires et articles Otaku N-kû" }
+                  { src: `${process.env.PUBLIC_URL}/images/nku-otaku-1.jpg`, alt: "Produits Otaku disponibles chez N-kû" },
+                  { src: `${process.env.PUBLIC_URL}/images/nku-mode-1.jpg`, alt: "Articles de mode élégante N-kû" },
+                  { src: `${process.env.PUBLIC_URL}/images/nku-mode-2.jpg`, alt: "Collection mode N-kû" },
+                  { src: `${process.env.PUBLIC_URL}/images/nku-otaku-2.jpg`, alt: "Accessoires et articles Otaku N-kû" }
                 ].map((img, idx) => (
                   <img 
                     key={idx}
@@ -472,58 +571,58 @@ export default function Portfolio() {
               </div>
             </article>
 
-            <article className="bg-white border-2 border-blue-100 rounded-2xl p-8">
-              <div className="flex items-center gap-4 mb-4">
-                <img src={`${basePath}/images/c-create.jpg`} alt="C'create N-kû, services créatifs et événements" className="w-20 h-20 rounded-lg object-cover" />
+            <article className="bg-white border-2 border-blue-100 rounded-xl sm:rounded-2xl p-4 sm:p-6 md:p-8">
+              <div className="flex items-center gap-2 sm:gap-3 md:gap-4 mb-2 sm:mb-3 md:mb-4">
+                <img src={`${process.env.PUBLIC_URL}/images/c-create.jpg`} alt="C'create N-kû, services créatifs et événements" className="w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20 rounded-lg object-cover" />
                 <div>
-                  <h3 className="text-3xl font-bold text-blue-950">C'create N-Kû 🎬</h3>
-                  <p className="text-lg text-blue-800">Filiale de N-Kû | Services créatifs</p>
+                  <h3 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold text-blue-950">C'create N-Kû 🎬</h3>
+                  <p className="text-sm sm:text-base md:text-lg text-blue-800">Filiale de N-Kû | Services créatifs</p>
                 </div>
               </div>
-              <p className="text-gray-700 leading-relaxed mb-4">
+              <p className="text-xs sm:text-sm md:text-base text-gray-700 leading-relaxed mb-2 sm:mb-3 md:mb-4">
                 Services de montage vidéo et organisation d'événements. Nous créons des montages vidéos créatifs 
                 et organisons des petites fêtes entre collègues, amis et famille avec professionnalisme et humour.
               </p>
-              <div className="flex flex-wrap gap-3 mb-6" role="list" aria-label="Services proposés par C'create">
-                <span className="px-4 py-2 bg-blue-50 text-blue-900 rounded-full" role="listitem">Montages vidéo</span>
-                <span className="px-4 py-2 bg-blue-50 text-blue-900 rounded-full" role="listitem">Création de CV</span>
-                <span className="px-4 py-2 bg-blue-50 text-blue-900 rounded-full" role="listitem">Conception d'affiches</span>
-                <span className="px-4 py-2 bg-blue-50 text-blue-900 rounded-full" role="listitem">Organisation d'événements</span>
+              <div className="flex flex-wrap gap-1.5 sm:gap-2 md:gap-3 mb-3 sm:mb-4 md:mb-6" role="list" aria-label="Services proposés par C'create">
+                <span className="px-2 py-1 sm:px-3 sm:py-1 md:px-4 md:py-2 bg-blue-50 text-blue-900 text-xs sm:text-sm rounded-full" role="listitem">Montages vidéo</span>
+                <span className="px-2 py-1 sm:px-3 sm:py-1 md:px-4 md:py-2 bg-blue-50 text-blue-900 text-xs sm:text-sm rounded-full" role="listitem">Création de CV</span>
+                <span className="px-2 py-1 sm:px-3 sm:py-1 md:px-4 md:py-2 bg-blue-50 text-blue-900 text-xs sm:text-sm rounded-full" role="listitem">Conception d'affiches</span>
+                <span className="px-2 py-1 sm:px-3 sm:py-1 md:px-4 md:py-2 bg-blue-50 text-blue-900 text-xs sm:text-sm rounded-full" role="listitem">Organisation d'événements</span>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4" role="list" aria-label="Exemples de réalisations C'create">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4" role="list" aria-label="Exemples de réalisations C'create">
                 <div className="relative group" role="listitem">
                   <video 
                     ref={(el) => (videoRefs.current[0] = el)}
-                    src={`${basePath}/images/ccreate-video1.mp4`}
+                    src={`${process.env.PUBLIC_URL}/images/ccreate-video1.mp4`}
                     className="w-full aspect-video object-contain bg-black rounded-lg shadow-md"
                     controls
-                    poster={`${basePath}/images/c-create.jpg`}
+                    poster={`${process.env.PUBLIC_URL}/images/c-create.jpg`}
                     onPlay={() => handleVideoPlay(0)}
                     aria-label="Vidéo de présentation des montages C'create, partie 1"
                   />
                 </div>
                 <img 
-                  src={`${basePath}/images/service create.jpg`}
+                  src={`${process.env.PUBLIC_URL}/images/service create.jpg`}
                   alt="Services créatifs proposés par C'create" 
                   className="w-full aspect-video object-cover rounded-lg shadow-md hover:shadow-xl transition-shadow cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-900"
-                  onClick={() => openLightbox(`${basePath}/images/service create.jpg`)}
+                  onClick={() => openLightbox(`${process.env.PUBLIC_URL}/images/service create.jpg`)}
                   role="listitem"
                   tabIndex={0}
                   onKeyPress={(e) => {
                     if (e.key === 'Enter' || e.key === ' ') {
                       e.preventDefault();
-                      openLightbox(`${basePath}/images/service create.jpg`);
+                      openLightbox(`${process.env.PUBLIC_URL}/images/service create.jpg`);
                     }
                   }}
                 />
                 <div className="relative group" role="listitem">
                   <video 
                     ref={(el) => (videoRefs.current[1] = el)}
-                    src={`${basePath}/images/ccreate-video2.mp4`}
+                    src={`${process.env.PUBLIC_URL}/images/ccreate-video2.mp4`}
                     className="w-full aspect-video object-contain bg-black rounded-lg shadow-md"
                     controls
-                    poster={`${basePath}/images/c-create.jpg`}
+                    poster={`${process.env.PUBLIC_URL}/images/c-create.jpg`}
                     onPlay={() => handleVideoPlay(1)}
                     aria-label="Vidéo de présentation des montages C'create, partie 2"
                   />
@@ -533,55 +632,53 @@ export default function Portfolio() {
           </div>
         </section>
 
-        {/* Publications Section */}
-        <section className="max-w-6xl mx-auto px-4 py-16" aria-labelledby="publications-title">
-          <div className="flex items-center gap-3 mb-8">
-            <BookOpen className="w-8 h-8 text-blue-900" aria-hidden="true" />
-            <h2 id="publications-title" className="text-4xl font-bold text-blue-950">Publications</h2>
+        <section className="max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-12 md:py-16" aria-labelledby="publications-title">
+          <div className="flex items-center gap-2 sm:gap-3 mb-4 sm:mb-6 md:mb-8">
+            <BookOpen className="w-5 h-5 sm:w-6 sm:h-6 md:w-8 md:h-8 text-blue-900" aria-hidden="true" />
+            <h2 id="publications-title" className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-blue-950">Publications</h2>
           </div>
-          <article className="bg-white border-2 border-blue-100 rounded-2xl p-8">
-            <h3 className="text-2xl font-bold text-blue-950 mb-4">✍️ Écrivaine à mes temps libres</h3>
-            <p className="text-gray-700 mb-6">
+          <article className="bg-white border-2 border-blue-100 rounded-xl sm:rounded-2xl p-4 sm:p-6 md:p-8">
+            <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-blue-950 mb-2 sm:mb-3 md:mb-4">✍️ Écrivaine à mes temps libres</h3>
+            <p className="text-xs sm:text-sm md:text-base text-gray-700 mb-3 sm:mb-4 md:mb-6">
               J'ai publié un essai disponible sur Amazon et Wattpad. L'écriture est ma façon d'explorer 
               d'autres univers et de partager mes réflexions.
             </p>
-            <div className="flex gap-4 flex-wrap">
+            <div className="flex gap-2 sm:gap-3 md:gap-4 flex-wrap">
               <a 
                 href="https://amzn.to/43Z190P" 
                 target="_blank" 
                 rel="noopener noreferrer"
-                className="px-6 py-3 bg-blue-900 text-white rounded-lg hover:bg-blue-800 transition-colors flex items-center gap-2 focus:outline-none focus:ring-2 focus:ring-blue-900 focus:ring-offset-2"
+                className="px-3 py-2 sm:px-4 sm:py-2 md:px-6 md:py-3 bg-blue-900 text-white text-xs sm:text-sm md:text-base rounded-lg hover:bg-blue-800 transition-colors flex items-center gap-2 focus:outline-none focus:ring-2 focus:ring-blue-900 focus:ring-offset-2"
                 aria-label="Acheter la version payante de mon livre sur Amazon (Ouvre dans un nouvel onglet)"
               >
-                <ExternalLink className="w-4 h-4" aria-hidden="true" /> Version Amazon (payante)
+                <ExternalLink className="w-3 h-3 md:w-4 md:h-4" aria-hidden="true" /> Version Amazon
               </a>
               <a 
                 href="https://www.wattpad.com" 
                 target="_blank" 
                 rel="noopener noreferrer"
-                className="px-6 py-3 bg-blue-100 text-blue-900 rounded-lg hover:bg-blue-200 transition-colors flex items-center gap-2 focus:outline-none focus:ring-2 focus:ring-blue-900 focus:ring-offset-2"
+                className="px-3 py-2 sm:px-4 sm:py-2 md:px-6 md:py-3 bg-blue-100 text-blue-900 text-xs sm:text-sm md:text-base rounded-lg hover:bg-blue-200 transition-colors flex items-center gap-2 focus:outline-none focus:ring-2 focus:ring-blue-900 focus:ring-offset-2"
                 aria-label="Lire gratuitement mon livre sur Wattpad (Ouvre dans un nouvel onglet)"
               >
-                <ExternalLink className="w-4 h-4" aria-hidden="true" /> Wattpad (gratuite)
+                <ExternalLink className="w-3 h-3 md:w-4 md:h-4" aria-hidden="true" /> Wattpad
               </a>
             </div>
           </article>
         </section>
 
-        {/* Skills Section */}
-        <section className="max-w-6xl mx-auto px-4 py-16 bg-gradient-to-r from-blue-50 to-white rounded-3xl my-8" ref={sectionRefs.skills} aria-labelledby="skills-title">
-          <div className="flex items-center gap-3 mb-8">
-            <Sparkles className="w-8 h-8 text-blue-900" aria-hidden="true" />
-            <h2 id="skills-title" className="text-4xl font-bold text-blue-950">Compétences & Passions</h2>
+        <section className="max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-12 md:py-16 bg-gradient-to-r from-blue-50 to-white rounded-2xl sm:rounded-3xl my-4 sm:my-6 md:my-8" ref={sectionRefs.skills} aria-labelledby="skills-title">
+          <div className="flex items-center gap-2 sm:gap-3 mb-4 sm:mb-6 md:mb-8">
+            <Sparkles className="w-5 h-5 sm:w-6 sm:h-6 md:w-8 md:h-8 text-blue-900" aria-hidden="true" />
+            <h2 id="skills-title" className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-blue-950">Compétences & Passions</h2>
           </div>
           
-          <div className="grid md:grid-cols-2 gap-8 mb-12">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 md:gap-8 mb-6 sm:mb-8 md:mb-12">
             {skills.map((skillGroup, index) => (
-              <article key={index} className="bg-white border-2 border-blue-100 rounded-2xl p-6">
-                <h3 className="text-xl font-bold text-blue-950 mb-4">{skillGroup.category}</h3>
-                <div className="flex flex-wrap gap-2" role="list" aria-label={`Compétences en ${skillGroup.category}`}>
+              <article key={index} className="bg-white border-2 border-blue-100 rounded-xl sm:rounded-2xl p-3 sm:p-4 md:p-6">
+                <h3 className="text-base sm:text-lg md:text-xl font-bold text-blue-950 mb-2 sm:mb-3 md:mb-4">{skillGroup.category}</h3>
+                <div className="flex flex-wrap gap-1.5 sm:gap-2" role="list" aria-label={`Compétences en ${skillGroup.category}`}>
                   {skillGroup.items.map((skill, i) => (
-                    <span key={i} className="px-4 py-2 bg-blue-50 text-blue-900 rounded-full" role="listitem">
+                    <span key={i} className="px-2 py-1 sm:px-3 sm:py-1 md:px-4 md:py-2 bg-blue-50 text-blue-900 text-xs sm:text-sm rounded-full" role="listitem">
                       {skill}
                     </span>
                   ))}
@@ -591,12 +688,12 @@ export default function Portfolio() {
           </div>
 
           <div>
-            <h3 className="text-2xl font-bold text-blue-950 mb-4 flex items-center gap-2">
-              <Heart className="w-6 h-6 text-blue-900" aria-hidden="true" /> Centres d'intérêt
+            <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-blue-950 mb-2 sm:mb-3 md:mb-4 flex items-center gap-2">
+              <Heart className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 text-blue-900" aria-hidden="true" /> Centres d'intérêt
             </h3>
-            <div className="flex flex-wrap gap-3" role="list" aria-label="Mes centres d'intérêt">
+            <div className="flex flex-wrap gap-1.5 sm:gap-2 md:gap-3" role="list" aria-label="Mes centres d'intérêt">
               {interests.map((interest, index) => (
-                <span key={index} className="px-4 py-2 bg-white border-2 border-blue-100 text-blue-900 rounded-full hover:bg-blue-50 transition-colors" role="listitem">
+                <span key={index} className="px-2 py-1 sm:px-3 sm:py-1 md:px-4 md:py-2 bg-white border-2 border-blue-100 text-blue-900 text-xs sm:text-sm rounded-full hover:bg-blue-50 transition-colors" role="listitem">
                   {interest}
                 </span>
               ))}
@@ -604,17 +701,16 @@ export default function Portfolio() {
           </div>
         </section>
 
-        {/* Contact Section */}
-        <section className="max-w-6xl mx-auto px-4 py-16" ref={sectionRefs.contact} aria-labelledby="contact-title">
-          <div className="text-center bg-gradient-to-r from-blue-900 to-blue-700 text-white rounded-3xl p-12">
-            <h2 id="contact-title" className="text-4xl font-bold mb-4">Travaillons ensemble ! ✨</h2>
-            <p className="text-xl mb-8 opacity-90">
+        <section className="max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-12 md:py-16" ref={sectionRefs.contact} aria-labelledby="contact-title">
+          <div className="text-center bg-gradient-to-r from-blue-900 to-blue-700 text-white rounded-xl sm:rounded-2xl md:rounded-3xl p-6 sm:p-8 md:p-12">
+            <h2 id="contact-title" className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold mb-2 sm:mb-3 md:mb-4">Travaillons ensemble ! ✨</h2>
+            <p className="text-sm sm:text-base md:text-xl mb-4 sm:mb-6 md:mb-8 opacity-90">
               Vous avez un projet en tête ? N'hésitez pas à me contacter.
             </p>
-            <div className="flex justify-center gap-4 flex-wrap">
+            <div className="flex flex-col sm:flex-row justify-center gap-2 sm:gap-3 md:gap-4">
               <a 
                 href="mailto:ashler.deleke@edu.igensia.com"
-                className="px-8 py-4 bg-white text-blue-900 rounded-lg font-semibold hover:bg-blue-50 transition-colors focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-blue-900"
+                className="px-4 py-2 sm:px-6 sm:py-3 md:px-8 md:py-4 bg-white text-blue-900 rounded-lg text-xs sm:text-sm md:text-base font-semibold hover:bg-blue-50 transition-colors focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-blue-900"
                 aria-label="M'envoyer un email pour me contacter"
               >
                 Me contacter
@@ -623,7 +719,7 @@ export default function Portfolio() {
                 href="https://github.com/ashler18" 
                 target="_blank" 
                 rel="noopener noreferrer"
-                className="px-8 py-4 bg-blue-800 text-white rounded-lg font-semibold hover:bg-blue-700 transition-colors focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-blue-900"
+                className="px-4 py-2 sm:px-6 sm:py-3 md:px-8 md:py-4 bg-blue-800 text-white rounded-lg text-xs sm:text-sm md:text-base font-semibold hover:bg-blue-700 transition-colors focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-blue-900"
                 aria-label="Visiter mon profil GitHub (Ouvre dans un nouvel onglet)"
               >
                 Voir mon GitHub
@@ -633,10 +729,9 @@ export default function Portfolio() {
         </section>
       </main>
 
-      {/* Footer */}
-      <footer className="max-w-6xl mx-auto px-4 py-8 text-center text-gray-600 border-t border-blue-100 mt-16" role="contentinfo">
-        <p className="mb-2">© 2025 Ashler DELEKE M. N. - Tous droits réservés</p>
-        <p className="text-sm">Conçu avec passion et une touche d'étoiles ⭐</p>
+      <footer className="max-w-6xl mx-auto px-4 sm:px-6 py-4 sm:py-6 md:py-8 text-center text-gray-600 border-t border-blue-100 mt-8 sm:mt-12 md:mt-16" role="contentinfo">
+        <p className="mb-1 sm:mb-2 text-xs sm:text-sm md:text-base">© 2025 Ashler DELEKE M. N. - Tous droits réservés</p>
+        <p className="text-xs sm:text-sm">Conçu avec passion et une touche d'étoiles ⭐</p>
       </footer>
     </div>
   );
