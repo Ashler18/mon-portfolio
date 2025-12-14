@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Github, Linkedin, Mail, ExternalLink, Star, Sparkles, BookOpen, Code, Briefcase, Heart, Download, X, ChevronLeft, ChevronRight, Menu } from 'lucide-react';
+import { Github, Linkedin, Mail, ExternalLink, Star, Sparkles, BookOpen, Code, Briefcase, Heart, Download, X, ChevronLeft, ChevronRight, Menu, Palette } from 'lucide-react';
 
 export default function Portfolio() {
   const [activeSection, setActiveSection] = useState('about');
@@ -13,8 +13,10 @@ export default function Portfolio() {
   const videoRefs = useRef([]);
   const sectionRefs = {
     about: useRef(null),
+    design: useRef(null),
     projects: useRef(null),
     business: useRef(null),
+    publications: useRef(null),
     skills: useRef(null),
     contact: useRef(null)
   };
@@ -69,11 +71,11 @@ export default function Portfolio() {
   };
 
   useEffect(() => {
-    document.title = "Portfolio - Ashler DELEKE M. N. | Développeuse Web";
+    document.title = "Portfolio - Ashler DELEKE M. N. | UX/UI Designer & Frontend Developer";
     document.documentElement.lang = "fr";
 
     const handleScroll = () => {
-      const sections = ['about', 'projects', 'business', 'skills', 'contact'];
+      const sections = ['about', 'design', 'projects', 'business', 'publications', 'skills', 'contact'];
       const scrollPosition = window.scrollY + 150;
 
       for (let i = sections.length - 1; i >= 0; i--) {
@@ -94,6 +96,24 @@ export default function Portfolio() {
     return () => window.removeEventListener('scroll', handleScroll);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  const projectUX = {
+    title: "FunkyFlip - Application Mobile de Bien-être",
+    period: "Projet UX/UI - 2025",
+    description: "Application mobile de santé mentale utilisant la thérapie par le rire pour améliorer l'humeur quotidienne des actifs stressés. Conception complète : recherche utilisateur, personas, wireframes, prototypes interactifs Figma.",
+    tech: ["Recherche UX", "Personas", "Wireframes", "Figma", "Miro", "Prototypage", "Architecture info"],
+    links: {
+      figma: "https://www.figma.com/proto/tncINUA2POhlpEizWdBiSv/FunkyFlip---Wireframes?node-id=17-3",
+      demo: null
+    },
+    preview: `${process.env.PUBLIC_URL}/images/funkyflip-accueil.png`,
+    gallery: [
+      `${process.env.PUBLIC_URL}/images/funkyflip-accueil.png`,
+      `${process.env.PUBLIC_URL}/images/funkyflip-explorer.png`,
+      `${process.env.PUBLIC_URL}/images/funkyflip-bienetre.png`,
+      `${process.env.PUBLIC_URL}/images/funkyflip-profil.png`
+    ]
+  };
 
   const projects = [
     {
@@ -156,16 +176,16 @@ export default function Portfolio() {
 
   const skills = [
     {
+      category: "Design UX/UI",
+      items: ["Recherche utilisateur & Personas", "Wireframes & Prototypes", "Figma & Miro", "Architecture de l'information", "Design Systems", "Tests d'usabilité"]
+    },
+    {
       category: "Langages & Technologies Web",
       items: ["HTML5 & CSS3", "JavaScript", "TypeScript", "PHP", "MySQL"]
     },
     {
       category: "Frameworks & Bibliothèques",
       items: ["React (Router, composants)", "Angular", "JavaSpark", "WordPress", "Node.js"]
-    },
-    {
-      category: "Design & UX/UI",
-      items: ["Figma", "Maquettage", "Workflows", "Accessibilité RGAA", "Responsive Design"]
     },
     {
       category: "Outils de développement",
@@ -315,8 +335,10 @@ export default function Portfolio() {
             <div className="hidden lg:flex gap-4 xl:gap-6">
               {[
                 { key: 'about', label: 'À propos' },
-                { key: 'projects', label: 'Projets' },
+                { key: 'design', label: 'Design UX/UI' },
+                { key: 'projects', label: 'Développement' },
                 { key: 'business', label: 'Entreprise' },
+                { key: 'publications', label: 'Publications' },
                 { key: 'skills', label: 'Compétences' },
                 { key: 'contact', label: 'Contact' }
               ].map((section) => (
@@ -350,8 +372,10 @@ export default function Portfolio() {
             <div className="lg:hidden mt-3 pb-3 space-y-2">
               {[
                 { key: 'about', label: 'À propos' },
-                { key: 'projects', label: 'Projets' },
+                { key: 'design', label: 'Design UX/UI' },
+                { key: 'projects', label: 'Développement' },
                 { key: 'business', label: 'Entreprise' },
+                { key: 'publications', label: 'Publications' },
                 { key: 'skills', label: 'Compétences' },
                 { key: 'contact', label: 'Contact' }
               ].map((section) => (
@@ -378,7 +402,7 @@ export default function Portfolio() {
           <div className="flex flex-col md:flex-row items-center gap-6 sm:gap-8 md:gap-12">
             <img 
               src={`${process.env.PUBLIC_URL}/images/photo-profil.jpg`}
-              alt="Ashler DELEKE, développeuse web" 
+              alt="Ashler DELEKE, UX/UI Designer & Frontend Developer" 
               className="w-28 h-28 sm:w-32 sm:h-32 md:w-40 md:h-40 lg:w-48 lg:h-48 rounded-full object-cover shadow-2xl border-4 border-blue-100"
             />
             <div className="flex-1 text-center md:text-left">
@@ -386,10 +410,10 @@ export default function Portfolio() {
                 Ashler DELEKE M. N.
               </h1>
               <p className="text-lg sm:text-xl md:text-2xl text-blue-900 mb-2 sm:mb-3 md:mb-4">
-                Conceptrice Développeuse d'Applications
+                UX/UI Designer & Frontend React Developer
               </p>
               <p className="text-sm sm:text-base md:text-lg text-gray-600 mb-4 sm:mb-5 md:mb-6 max-w-2xl mx-auto md:mx-0">
-                Étudiante passionnée à IPI-Lyon, créant des expériences numériques accessibles et innovantes. 
+                Étudiante passionnée créant des expériences numériques accessibles et innovantes. 
                 Entrepreneure, développeuse et écrivaine, je transforme les idées en réalité.
               </p>
               <div className="flex gap-2 sm:gap-3 md:gap-4 justify-center md:justify-start flex-wrap">
@@ -419,7 +443,7 @@ export default function Portfolio() {
                   <Linkedin className="w-4 h-4 sm:w-4 sm:h-4 md:w-5 md:h-5" aria-hidden="true" />
                 </a>
                 <a 
-                  href="mailto:ashler.deleke@edu.igensia.com"
+                  href="mailto:delekeashler@gmail.com"
                   className="p-2 sm:p-2.5 md:p-3 bg-blue-900 text-white rounded-full hover:bg-blue-800 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-900 focus:ring-offset-2"
                   aria-label="M'envoyer un email"
                 >
@@ -437,17 +461,97 @@ export default function Portfolio() {
           </div>
           <div className="prose prose-sm sm:prose-base md:prose-lg max-w-none">
             <p className="text-gray-700 leading-relaxed mb-3 sm:mb-4 text-sm sm:text-base">
-              Actuellement étudiante en <strong>Concepteur Développeur d'Application Numérique</strong> à IPI-Lyon, 
-              je suis passionnée par la création d'expériences numériques qui allient esthétique, accessibilité et innovation.
+              Je suis Ashler DELEKE, passionnée par la création d'expériences numériques qui allient esthétique, accessibilité et innovation.
             </p>
             <p className="text-gray-700 leading-relaxed mb-3 sm:mb-4 text-sm sm:text-base">
-              Mon parcours combine développement web, design UI/UX et entrepreneuriat. Je crois fermement que la technologie 
-              doit être accessible à tous, c'est pourquoi je me spécialise dans l'accessibilité web (RGAA) et l'expérience utilisateur.
+              Issue d'une formation en Réseaux Informatiques et Télécommunication, j'ai développé une solide base technique avant de me spécialiser dans le design UX/UI et le développement frontend. Cette double compétence me permet de créer des interfaces non seulement esthétiques, mais aussi techniquement optimisées et accessibles.
             </p>
-            <p className="text-gray-700 leading-relaxed text-sm sm:text-base">
-              Au-delà du code, je développe N-kû, un projet entrepreneurial de vente en ligne au Bénin, et écrivaine à mes heures perdues. 
-              Passionnée d'astronomie, de design et d'intelligence artificielle, j'aime explorer de nouveaux horizons, 
-              que ce soit dans le code ou dans les étoiles. ✨
+            <p className="text-gray-700 leading-relaxed mb-3 sm:mb-4 text-sm sm:text-base">
+              De la recherche utilisateur aux prototypes Figma, jusqu'au développement React, je maîtrise toute la chaîne de conception avec une attention particulière aux normes RGAA. Au-delà du numérique, je dirige N-kû, mon projet e-commerce au Bénin via WhatsApp, une aventure entrepreneuriale qui allie commerce et apprentissage. Écrivaine à mes temps perdus, je m'inspire de l'astronomie, la musique et l'IA pour explorer sans cesse de nouveaux horizons. ✨
+            </p>
+          </div>
+
+          <div className="mt-6 sm:mt-8 bg-blue-50 border-2 border-blue-100 rounded-xl p-4 sm:p-6">
+            <h3 className="text-lg sm:text-xl font-bold text-blue-950 mb-4">Formation & Certifications</h3>
+            <div className="space-y-3">
+              <div>
+                <p className="font-semibold text-blue-900 text-sm sm:text-base">📚 Formation en Réseaux Informatiques et Télécommunication</p>
+                <p className="text-xs sm:text-sm text-gray-600">HECM - Bénin</p>
+              </div>
+              <div>
+                <p className="font-semibold text-blue-900 text-sm sm:text-base">🎓 Bachelor Développeur</p>
+                <p className="text-xs sm:text-sm text-gray-600">IPI-Lyon </p>
+              </div>
+              <div>
+                <p className="font-semibold text-blue-900 text-sm sm:text-base">📜Web Accessibility Basics</p>
+                <p className="text-xs sm:text-sm text-gray-600">Contentsquare</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section className="max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-12 md:py-16" ref={sectionRefs.design} aria-labelledby="design-title">
+          <div className="flex items-center gap-2 sm:gap-3 mb-4 sm:mb-6 md:mb-8">
+            <Palette className="w-5 h-5 sm:w-6 sm:h-6 md:w-8 md:h-8 text-blue-900" aria-hidden="true" />
+            <h2 id="design-title" className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-blue-950">Design UX/UI</h2>
+          </div>
+
+          <article className="bg-white border-2 border-blue-100 rounded-xl sm:rounded-2xl overflow-hidden hover:shadow-xl transition-all hover:-translate-y-1">
+            <div 
+              className="relative cursor-pointer group"
+              onClick={() => openLightbox(projectUX.preview, projectUX.gallery)}
+              role="button"
+              tabIndex={0}
+              onKeyPress={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  e.preventDefault();
+                  openLightbox(projectUX.preview, projectUX.gallery);
+                }
+              }}
+              aria-label={`Agrandir l'image du projet ${projectUX.title}`}
+            >
+              <img 
+                src={projectUX.preview} 
+                alt={`Projet ${projectUX.title}`}
+                className="w-full h-40 sm:h-48 object-cover object-top"
+              />
+              <div className="absolute inset-0 bg-blue-900/0 group-hover:bg-blue-900/20 transition-colors flex items-center justify-center">
+                <span className="text-white opacity-0 group-hover:opacity-100 transition-opacity text-xs sm:text-sm md:text-base lg:text-lg font-semibold px-3 sm:px-4 text-center">
+                  🔍 Cliquez pour agrandir ({projectUX.gallery.length} images)
+                </span>
+              </div>
+            </div>
+            
+            <div className="p-3 sm:p-4 md:p-6">
+              <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-blue-950 mb-1 sm:mb-2">{projectUX.title}</h3>
+              <p className="text-xs sm:text-sm text-blue-700 mb-2 md:mb-3">{projectUX.period}</p>
+              <p className="text-xs sm:text-sm md:text-base text-gray-600 mb-2 sm:mb-3 md:mb-4">{projectUX.description}</p>
+              <div className="flex flex-wrap gap-1.5 sm:gap-2 mb-2 sm:mb-3 md:mb-4" role="list" aria-label="Technologies utilisées">
+                {projectUX.tech.map((tech, i) => (
+                  <span key={i} className="px-2 py-0.5 sm:px-2 sm:py-1 md:px-3 md:py-1 bg-blue-50 text-blue-900 text-xs sm:text-sm rounded-full" role="listitem">
+                    {tech}
+                  </span>
+                ))}
+              </div>
+              <div className="flex gap-2 sm:gap-3 text-xs sm:text-sm md:text-base flex-wrap">
+                {projectUX.links.figma && (
+                  <a 
+                    href={projectUX.links.figma} 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-1 sm:gap-2 text-blue-900 hover:text-blue-700 transition-colors font-semibold focus:outline-none focus:ring-2 focus:ring-blue-900 rounded px-2 py-1"
+                    aria-label={`Voir le prototype Figma de ${projectUX.title} (Ouvre dans un nouvel onglet)`}
+                  >
+                    <ExternalLink className="w-3 h-3 sm:w-4 sm:h-4" aria-hidden="true" /> Voir le prototype Figma
+                  </a>
+                )}
+              </div>
+            </div>
+          </article>
+
+          <div className="mt-6 p-4 sm:p-6 bg-blue-50 border-2 border-blue-100 rounded-xl">
+            <p className="text-sm sm:text-base text-gray-700">
+              💼 <strong>Autres projets design</strong> : J'ai également réalisé de nombreuses affiches, montages vidéo et créations visuelles pour des clients via mon entreprise C'create N-kû. Ces projets ne peuvent être présentés publiquement en raison de leur caractère confidentiel.
             </p>
           </div>
         </section>
@@ -455,7 +559,7 @@ export default function Portfolio() {
         <section className="max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-12 md:py-16" ref={sectionRefs.projects} aria-labelledby="projects-title">
           <div className="flex items-center gap-2 sm:gap-3 mb-4 sm:mb-6 md:mb-8">
             <Code className="w-5 h-5 sm:w-6 sm:h-6 md:w-8 md:h-8 text-blue-900" aria-hidden="true" />
-            <h2 id="projects-title" className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-blue-950">Mes Projets</h2>
+            <h2 id="projects-title" className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-blue-950">Développement Frontend</h2>
           </div>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-5 md:gap-6">
             {projects.map((project, index) => (
@@ -632,7 +736,7 @@ export default function Portfolio() {
           </div>
         </section>
 
-        <section className="max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-12 md:py-16" aria-labelledby="publications-title">
+        <section className="max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-12 md:py-16" ref={sectionRefs.publications} aria-labelledby="publications-title">
           <div className="flex items-center gap-2 sm:gap-3 mb-4 sm:mb-6 md:mb-8">
             <BookOpen className="w-5 h-5 sm:w-6 sm:h-6 md:w-8 md:h-8 text-blue-900" aria-hidden="true" />
             <h2 id="publications-title" className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-blue-950">Publications</h2>
@@ -651,7 +755,7 @@ export default function Portfolio() {
                 className="px-3 py-2 sm:px-4 sm:py-2 md:px-6 md:py-3 bg-blue-900 text-white text-xs sm:text-sm md:text-base rounded-lg hover:bg-blue-800 transition-colors flex items-center gap-2 focus:outline-none focus:ring-2 focus:ring-blue-900 focus:ring-offset-2"
                 aria-label="Acheter la version payante de mon livre sur Amazon (Ouvre dans un nouvel onglet)"
               >
-                <ExternalLink className="w-3 h-3 md:w-4 md:h-4" aria-hidden="true" /> Version Amazon
+                <ExternalLink className="w-3 h-3 md:w-4 md:h-4" aria-hidden="true" /> Version Amazon (payante)
               </a>
               <a 
                 href="https://www.wattpad.com" 
@@ -660,7 +764,7 @@ export default function Portfolio() {
                 className="px-3 py-2 sm:px-4 sm:py-2 md:px-6 md:py-3 bg-blue-100 text-blue-900 text-xs sm:text-sm md:text-base rounded-lg hover:bg-blue-200 transition-colors flex items-center gap-2 focus:outline-none focus:ring-2 focus:ring-blue-900 focus:ring-offset-2"
                 aria-label="Lire gratuitement mon livre sur Wattpad (Ouvre dans un nouvel onglet)"
               >
-                <ExternalLink className="w-3 h-3 md:w-4 md:h-4" aria-hidden="true" /> Wattpad
+                <ExternalLink className="w-3 h-3 md:w-4 md:h-4" aria-hidden="true" /> Wattpad (gratuite)
               </a>
             </div>
           </article>
@@ -701,6 +805,23 @@ export default function Portfolio() {
           </div>
         </section>
 
+        <section className="max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-12 md:py-16">
+          <div className="bg-gradient-to-r from-blue-900 to-blue-700 text-white rounded-xl sm:rounded-2xl p-6 sm:p-8 md:p-12 text-center">
+            <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold mb-3 sm:mb-4">
+              Envie de travailler sur un projet ensemble ? 🚀
+            </h2>
+            <p className="text-sm sm:text-base md:text-lg mb-4 sm:mb-6 opacity-90 max-w-2xl mx-auto">
+              Que ce soit pour du design UX/UI, du développement React, ou les deux, je serais ravie d'échanger sur votre projet. Discutons de vos besoins !
+            </p>
+            <a 
+              href="mailto:delekeashler@gmail.com"
+              className="inline-block px-6 py-3 sm:px-8 sm:py-4 bg-white text-blue-900 rounded-lg text-sm sm:text-base font-semibold hover:bg-blue-50 transition-colors focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-blue-900"
+            >
+              Contactez-moi
+            </a>
+          </div>
+        </section>
+
         <section className="max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-12 md:py-16" ref={sectionRefs.contact} aria-labelledby="contact-title">
           <div className="text-center bg-gradient-to-r from-blue-900 to-blue-700 text-white rounded-xl sm:rounded-2xl md:rounded-3xl p-6 sm:p-8 md:p-12">
             <h2 id="contact-title" className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold mb-2 sm:mb-3 md:mb-4">Travaillons ensemble ! ✨</h2>
@@ -709,7 +830,7 @@ export default function Portfolio() {
             </p>
             <div className="flex flex-col sm:flex-row justify-center gap-2 sm:gap-3 md:gap-4">
               <a 
-                href="mailto:ashler.deleke@edu.igensia.com"
+                href="mailto:delekeashler@gmail.com"
                 className="px-4 py-2 sm:px-6 sm:py-3 md:px-8 md:py-4 bg-white text-blue-900 rounded-lg text-xs sm:text-sm md:text-base font-semibold hover:bg-blue-50 transition-colors focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-blue-900"
                 aria-label="M'envoyer un email pour me contacter"
               >
