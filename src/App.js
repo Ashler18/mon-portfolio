@@ -549,11 +549,7 @@ export default function Portfolio() {
             </div>
           </article>
 
-          <div className="mt-6 p-4 sm:p-6 bg-blue-50 border-2 border-blue-100 rounded-xl">
-            <p className="text-sm sm:text-base text-gray-700">
-              💼 <strong>Autres projets design</strong> : J'ai également réalisé de nombreuses affiches, montages vidéo et créations visuelles pour des clients via mon entreprise C'create N-kû. Ces projets ne peuvent être présentés publiquement en raison de leur caractère confidentiel.
-            </p>
-          </div>
+
         </section>
 
         <section className="max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-12 md:py-16" ref={sectionRefs.projects} aria-labelledby="projects-title">
