@@ -694,7 +694,7 @@ export default function Portfolio() {
                 Marque textile alliant design visuel et vente de produits<br/>Brand Design en cours
               </p>
               <div className="inline-flex items-center gap-3 px-8 py-4 bg-white text-orange-600 rounded-full text-3xl sm:text-4xl font-bold shadow-2xl">
-                <span>02.02.2026</span>
+                <span>Février 2026</span>
               </div>
             </div>
           </div>
