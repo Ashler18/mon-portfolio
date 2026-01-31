@@ -621,7 +621,7 @@ export default function Portfolio() {
         {/* Galerie créative */}
         <section className="max-w-7xl mx-auto px-4 sm:px-6 py-20" ref={sectionRefs.gallery} aria-labelledby="gallery-title">
           <div className="text-center mb-16">
-            <h2 id="gallery-title" className="text-5xl sm:text-6xl lg:text-7xl font-bold mb-6 text-gray-900 tracking-tight">
+            <h2 id="gallery-title" className="text-5xl sm:text-6xl lg:text-7xl font-bold mb-6 text-gray-900 tracking-tight leading-tight">
               Créations & Réalisations
             </h2>
             <p className="text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed">
@@ -692,12 +692,12 @@ export default function Portfolio() {
 
         {/* À propos */}
         <section className="max-w-7xl mx-auto px-4 sm:px-6 py-20" ref={sectionRefs.about} aria-labelledby="about-title">
-          <div className="bg-white rounded-3xl p-10 sm:p-14 shadow-xl border border-gray-100">
+          <div className="bg-white rounded-3xl p-6 sm:p-10 lg:p-14 shadow-xl border border-gray-100">
             <div className="flex items-center gap-4 mb-10">
               <div className="p-3 bg-orange-50 rounded-2xl">
                 <Star className="w-8 h-8 text-orange-600" />
               </div>
-              <h2 id="about-title" className="text-4xl sm:text-5xl font-bold text-gray-900 tracking-tight">
+              <h2 id="about-title" className="text-4xl sm:text-5xl font-bold text-gray-900 tracking-tight leading-tight">
                 À propos de moi
               </h2>
             </div>
@@ -719,7 +719,7 @@ export default function Portfolio() {
             </div>
 
             <div className="mt-10 grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="bg-gray-50 rounded-2xl p-8 border border-gray-100 hover:shadow-lg transition-all duration-300">
+              <div className="bg-gray-50 rounded-2xl p-5 sm:p-6 lg:p-8 border border-gray-100 hover:shadow-lg transition-all duration-300">
                 <h3 className="text-xl font-bold text-gray-900 mb-6 flex items-center gap-3">
                   <div className="p-2 bg-orange-50 rounded-lg">
                     <Award className="w-5 h-5 text-orange-600" />
@@ -742,7 +742,7 @@ export default function Portfolio() {
                 </div>
               </div>
 
-              <div className="bg-gray-50 rounded-2xl p-8 border border-gray-100 hover:shadow-lg transition-all duration-300">
+              <div className="bg-gray-50 rounded-2xl p-5 sm:p-6 lg:p-8 border border-gray-100 hover:shadow-lg transition-all duration-300">
                 <h3 className="text-xl font-bold text-gray-900 mb-6 flex items-center gap-3">
                   <div className="p-2 bg-orange-50 rounded-lg">
                     <Sparkles className="w-5 h-5 text-orange-600" />
@@ -775,7 +775,7 @@ export default function Portfolio() {
                 <Sparkles className="w-5 h-5" />
                 COMING SOON
               </div>
-              <h2 className="text-5xl sm:text-6xl lg:text-7xl font-bold mb-6 tracking-tight">
+              <h2 className="text-5xl sm:text-6xl lg:text-7xl font-bold mb-6 tracking-tight leading-tight">
                 Projet Entrepreneurial<br/>Art-shler
               </h2>
               <p className="text-xl sm:text-2xl text-orange-50 mb-8 max-w-3xl mx-auto leading-relaxed font-medium">
@@ -794,7 +794,7 @@ export default function Portfolio() {
             <div className="p-3 bg-orange-50 rounded-2xl">
               <Palette className="w-8 h-8 text-orange-600" />
             </div>
-            <h2 id="design-title" className="text-4xl sm:text-5xl font-bold text-gray-900 tracking-tight">
+            <h2 id="design-title" className="text-4xl sm:text-5xl font-bold text-gray-900 tracking-tight leading-tight">
               Projet Design UX/UI
             </h2>
           </div>
@@ -848,7 +848,7 @@ export default function Portfolio() {
             <div className="p-3 bg-orange-50 rounded-2xl">
               <Code className="w-8 h-8 text-orange-600" />
             </div>
-            <h2 id="projects-title" className="text-4xl sm:text-5xl font-bold text-gray-900 tracking-tight">
+            <h2 id="projects-title" className="text-4xl sm:text-5xl font-bold text-gray-900 tracking-tight leading-tight">
               Projets de Développement
             </h2>
           </div>
@@ -922,13 +922,13 @@ export default function Portfolio() {
               <div className="p-3 bg-orange-50 rounded-2xl">
                 <Briefcase className="w-8 h-8 text-orange-600" />
               </div>
-              <h2 id="business-title" className="text-4xl sm:text-5xl font-bold text-gray-900 tracking-tight">
+              <h2 id="business-title" className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 tracking-tight leading-tight">
                 Aventure Entrepreneuriale
               </h2>
             </div>
             
             <div className="space-y-10">
-              <article className="bg-gray-50 rounded-2xl p-8 border border-gray-100 hover:shadow-lg transition-all duration-300">
+              <article className="bg-gray-50 rounded-2xl p-5 sm:p-6 lg:p-8 border border-gray-100 hover:shadow-lg transition-all duration-300">
                 <div className="flex items-center gap-4 mb-6">
                   <img 
                     src={`${process.env.PUBLIC_URL}/images/logo-N-ku.jpg`} 
@@ -936,8 +936,8 @@ export default function Portfolio() {
                     className="w-20 h-20 rounded-2xl object-contain bg-white p-3 shadow-md border border-gray-200" 
                   />
                   <div>
-                    <h3 className="text-3xl font-bold text-gray-900">N-Kû 🛍️</h3>
-                    <p className="text-orange-600 font-semibold">Fondatrice & Créatrice | Bénin</p>
+                    <h3 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900">N-Kû 🛍️</h3>
+                    <p className="text-orange-600 font-semibold text-sm sm:text-base">Fondatrice & Créatrice | Bénin</p>
                   </div>
                 </div>
                 <p className="text-gray-700 mb-8 leading-relaxed text-lg">
@@ -963,7 +963,7 @@ export default function Portfolio() {
                 </div>
               </article>
 
-              <article className="bg-gray-50 rounded-2xl p-8 border border-gray-100 hover:shadow-lg transition-all duration-300">
+              <article className="bg-gray-50 rounded-2xl p-5 sm:p-6 lg:p-8 border border-gray-100 hover:shadow-lg transition-all duration-300">
                 <div className="flex items-center gap-4 mb-6">
                   <img 
                     src={`${process.env.PUBLIC_URL}/images/c-create.jpg`} 
@@ -971,8 +971,8 @@ export default function Portfolio() {
                     className="w-20 h-20 rounded-2xl object-cover shadow-md border-2 border-white" 
                   />
                   <div>
-                    <h3 className="text-3xl font-bold text-gray-900">C'create N-Kû 🎬</h3>
-                    <p className="text-orange-600 font-semibold">Services Créatifs & Événements</p>
+                    <h3 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900">C'create N-Kû 🎬</h3>
+                    <p className="text-orange-600 font-semibold text-sm sm:text-base">Services Créatifs & Événements</p>
                   </div>
                 </div>
                 <p className="text-gray-700 mb-6 leading-relaxed text-lg">
@@ -1017,12 +1017,12 @@ export default function Portfolio() {
 
         {/* Publications */}
         <section className="max-w-7xl mx-auto px-4 sm:px-6 py-20" ref={sectionRefs.publications} aria-labelledby="publications-title">
-          <div className="bg-white rounded-3xl p-10 sm:p-14 shadow-xl border border-gray-100">
+          <div className="bg-white rounded-3xl p-6 sm:p-10 lg:p-14 shadow-xl border border-gray-100">
             <div className="flex items-center gap-4 mb-10">
               <div className="p-3 bg-orange-50 rounded-2xl">
                 <BookOpen className="w-8 h-8 text-orange-600" />
               </div>
-              <h2 id="publications-title" className="text-4xl sm:text-5xl font-bold text-gray-900 tracking-tight">
+              <h2 id="publications-title" className="text-4xl sm:text-5xl font-bold text-gray-900 tracking-tight leading-tight">
                 Publications
               </h2>
             </div>
@@ -1061,7 +1061,7 @@ export default function Portfolio() {
             <div className="p-3 bg-orange-50 rounded-2xl">
               <Sparkles className="w-8 h-8 text-orange-600" />
             </div>
-            <h2 id="skills-title" className="text-4xl sm:text-5xl font-bold text-gray-900 tracking-tight">
+            <h2 id="skills-title" className="text-4xl sm:text-5xl font-bold text-gray-900 tracking-tight leading-tight">
               Compétences & Passions
             </h2>
           </div>
