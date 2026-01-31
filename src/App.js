@@ -770,18 +770,18 @@ export default function Portfolio() {
             <div className="absolute inset-0">
               <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(255,255,255,0.1),transparent_50%)]"></div>
             </div>
-            <div className="relative p-12 sm:p-16 text-center text-white">
+            <div className="relative p-8 sm:p-12 md:p-16 text-center text-white">
               <div className="inline-flex items-center gap-2 px-5 py-2 bg-white/20 backdrop-blur-sm rounded-full text-white text-sm font-bold mb-6 animate-pulse">
                 <Sparkles className="w-5 h-5" />
                 COMING SOON
               </div>
-              <h2 className="text-5xl sm:text-6xl lg:text-7xl font-bold mb-6 tracking-tight leading-tight">
+              <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-6 tracking-tight leading-tight">
                 Projet Entrepreneurial<br/>Art-shler
               </h2>
-              <p className="text-xl sm:text-2xl text-orange-50 mb-8 max-w-3xl mx-auto leading-relaxed font-medium">
-                Marque textile alliant design visuel et vente de produits<br/>Brand Design en cours
+              <p className="text-lg sm:text-xl lg:text-2xl text-orange-50 mb-8 max-w-3xl mx-auto leading-relaxed font-medium px-4">
+                Marque textile alliant design visuel et vente de produits<br className="hidden sm:block"/>Brand Design en cours
               </p>
-              <div className="inline-flex items-center gap-3 px-8 py-4 bg-white text-orange-600 rounded-full text-3xl sm:text-4xl font-bold shadow-2xl">
+              <div className="inline-flex items-center gap-3 px-6 py-3 sm:px-8 sm:py-4 bg-white text-orange-600 rounded-full text-2xl sm:text-3xl lg:text-4xl font-bold shadow-2xl">
                 <span>Février 2026</span>
               </div>
             </div>
