@@ -116,16 +116,12 @@ export default function Portfolio() {
       title: 'Carnet B.O.W - Action Caritative',
       image: `${process.env.PUBLIC_URL}/images/flyers/carnet-bow.jpg`,
       category: 'Design Print',
-      description: 'Carnet créatif que j\'ai conçu et offert aux enfants d\'un orphelinat au Bénin lors d\'une action caritative du B.O.W. Illustrations cute et colorées d\'animé pour encourager les enfants à dessiner, écrire et exprimer leur créativité.'
-    },
-    {
-      type: 'video',
-      title: 'Carnet B.O.W - Vidéo de Présentation',
-      image: `${process.env.PUBLIC_URL}/images/flyers/carnet-bow.jpg`,
-      category: 'Design Print',
-      description: 'Vidéo de présentation du carnet créatif B.O.W montrant les illustrations et pages intérieures.',
-      video: `${process.env.PUBLIC_URL}/images/flyers/carnet-bow-video.mp4`,
-      isVideoCard: true
+      description: 'Carnet créatif que j\'ai conçu et offert aux enfants d\'un orphelinat au Bénin lors d\'une action caritative du B.O.W. Illustrations cute et colorées d\'animé pour encourager les enfants à dessiner, écrire et exprimer leur créativité.',
+      gallery: [
+        `${process.env.PUBLIC_URL}/images/flyers/carnet-bow.jpg`,
+        `${process.env.PUBLIC_URL}/images/flyers/carnet-bow-video.mp4`
+      ],
+      hasVideo: true
     },
     {
       type: 'print',
@@ -418,7 +414,7 @@ export default function Portfolio() {
       {/* Lightbox */}
       {lightboxOpen && (
         <div 
-          className="fixed inset-0 z-50 bg-black/95 backdrop-blur-sm flex items-center justify-center p-2" 
+          className="fixed inset-0 z-50 bg-black/95 backdrop-blur-sm flex items-center justify-center p-2 sm:p-4" 
           onClick={closeLightbox}
           role="dialog"
           aria-modal="true"
@@ -426,40 +422,53 @@ export default function Portfolio() {
         >
           <button 
             onClick={closeLightbox}
-            className="absolute top-4 right-4 text-white hover:text-orange-400 transition-colors focus:outline-none focus:ring-2 focus:ring-orange-500 rounded-lg p-2 z-10"
+            className="absolute top-2 right-2 sm:top-4 sm:right-4 text-white hover:text-orange-400 transition-colors focus:outline-none focus:ring-2 focus:ring-orange-500 rounded-lg p-2 z-10"
             aria-label="Fermer la visionneuse"
           >
-            <X className="w-8 h-8" />
+            <X className="w-6 h-6 sm:w-8 sm:h-8" />
           </button>
           
           {currentGallery.length > 1 && (
             <>
               <button 
                 onClick={(e) => { e.stopPropagation(); prevImage(); }}
-                className="absolute left-4 text-white hover:text-orange-400 transition-colors focus:outline-none focus:ring-2 focus:ring-orange-500 rounded-lg p-2 bg-black/50 backdrop-blur-sm"
+                className="absolute left-2 sm:left-4 text-white hover:text-orange-400 transition-colors focus:outline-none focus:ring-2 focus:ring-orange-500 rounded-lg p-2 bg-black/50 backdrop-blur-sm"
                 aria-label="Image précédente"
               >
-                <ChevronLeft className="w-12 h-12" />
+                <ChevronLeft className="w-8 h-8 sm:w-12 sm:h-12" />
               </button>
               <button 
                 onClick={(e) => { e.stopPropagation(); nextImage(); }}
-                className="absolute right-4 text-white hover:text-orange-400 transition-colors focus:outline-none focus:ring-2 focus:ring-orange-500 rounded-lg p-2 bg-black/50 backdrop-blur-sm"
+                className="absolute right-2 sm:right-4 text-white hover:text-orange-400 transition-colors focus:outline-none focus:ring-2 focus:ring-orange-500 rounded-lg p-2 bg-black/50 backdrop-blur-sm"
                 aria-label="Image suivante"
               >
-                <ChevronRight className="w-12 h-12" />
+                <ChevronRight className="w-8 h-8 sm:w-12 sm:h-12" />
               </button>
             </>
           )}
           
-          <img 
-            src={currentImage} 
-            alt="Agrandissement du projet sélectionné" 
-            className="max-w-[90vw] max-h-[80vh] object-contain rounded-2xl shadow-2xl"
-            onClick={(e) => e.stopPropagation()}
-          />
+          {/* Affichage conditionnel : Vidéo ou Image */}
+          {currentImage && (currentImage.endsWith('.mp4') || currentImage.endsWith('.webm') || currentImage.endsWith('.mov')) ? (
+            <video 
+              src={currentImage} 
+              className="max-w-[95vw] sm:max-w-[90vw] max-h-[85vh] sm:max-h-[80vh] rounded-2xl shadow-2xl"
+              onClick={(e) => e.stopPropagation()}
+              controls
+              autoPlay
+            >
+              Votre navigateur ne supporte pas la lecture de vidéos.
+            </video>
+          ) : (
+            <img 
+              src={currentImage} 
+              alt="Agrandissement du projet sélectionné" 
+              className="max-w-[95vw] sm:max-w-[90vw] max-h-[85vh] sm:max-h-[80vh] object-contain rounded-2xl shadow-2xl"
+              onClick={(e) => e.stopPropagation()}
+            />
+          )}
           
           {currentGallery.length > 1 && (
-            <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 text-white text-lg bg-black/50 backdrop-blur-sm px-6 py-3 rounded-full font-medium" aria-live="polite">
+            <div className="absolute bottom-2 sm:bottom-4 left-1/2 transform -translate-x-1/2 text-white text-sm sm:text-lg bg-black/50 backdrop-blur-sm px-4 sm:px-6 py-2 sm:py-3 rounded-full font-medium" aria-live="polite">
               {currentIndex + 1} / {currentGallery.length}
             </div>
           )}
@@ -620,63 +629,53 @@ export default function Portfolio() {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
             {creativeWorks.map((work, index) => (
               <article 
                 key={index}
                 className="group bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 cursor-pointer border border-gray-100"
-                onClick={() => !work.isVideoCard && openLightbox(work.image, work.gallery || [work.image])}
+                onClick={() => openLightbox(work.image, work.gallery || [work.image])}
                 style={{ animationDelay: `${index * 0.1}s` }}
               >
-                {/* Affichage conditionnel : Vidéo ou Image */}
-                {work.isVideoCard ? (
-                  // Card avec lecteur vidéo
-                  <div className="relative overflow-hidden aspect-[4/3] bg-gray-900" onClick={(e) => e.stopPropagation()}>
-                    <video 
-                      src={work.video}
-                      className="w-full h-full object-cover"
-                      controls
-                      poster={work.image}
-                    >
-                      Votre navigateur ne supporte pas la lecture de vidéos.
-                    </video>
-                    
-                    {/* Badge catégorie */}
-                    <div className="absolute top-4 right-4 transform group-hover:scale-110 transition-transform duration-300">
-                      <span className="px-4 py-2 bg-white/95 backdrop-blur-sm text-gray-900 text-xs font-bold rounded-full shadow-lg">
-                        {work.category}
+                {/* Image principale */}
+                <div className="relative overflow-hidden aspect-[4/3]">
+                  <img 
+                    src={work.image} 
+                    alt={work.title}
+                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                  />
+                  {/* Voile permanent doux */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-gray-900/50 via-gray-900/10 to-transparent"></div>
+                  {/* Voile au hover renforcé */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-gray-900/80 via-gray-900/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                  
+                  {/* Badge catégorie */}
+                  <div className="absolute top-4 right-4 transform group-hover:scale-110 transition-transform duration-300">
+                    <span className="px-4 py-2 bg-white/95 backdrop-blur-sm text-gray-900 text-xs font-bold rounded-full shadow-lg">
+                      {work.category}
+                    </span>
+                  </div>
+                  
+                  {/* Badge Vidéo si hasVideo */}
+                  {work.hasVideo && (
+                    <div className="absolute top-4 left-4 transform group-hover:scale-110 transition-transform duration-300">
+                      <span className="px-3 py-2 bg-orange-500/95 backdrop-blur-sm text-white text-xs font-bold rounded-full shadow-lg flex items-center gap-1">
+                        <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                          <path d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z"/>
+                        </svg>
+                        Vidéo
                       </span>
                     </div>
-                  </div>
-                ) : (
-                  // Card avec image normale
-                  <div className="relative overflow-hidden aspect-[4/3]">
-                    <img 
-                      src={work.image} 
-                      alt={work.title}
-                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                    />
-                    {/* Voile permanent doux */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-gray-900/50 via-gray-900/10 to-transparent"></div>
-                    {/* Voile au hover renforcé */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-gray-900/80 via-gray-900/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                    
-                    {/* Badge catégorie */}
-                    <div className="absolute top-4 right-4 transform group-hover:scale-110 transition-transform duration-300">
-                      <span className="px-4 py-2 bg-white/95 backdrop-blur-sm text-gray-900 text-xs font-bold rounded-full shadow-lg">
-                        {work.category}
-                      </span>
-                    </div>
-                    
-                    {/* Texte "Voir plus" au hover */}
-                    <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-500">
-                      <div className="text-white text-center transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
-                        <Sparkles className="w-8 h-8 mx-auto mb-2" />
-                        <span className="text-lg font-bold">Voir plus</span>
-                      </div>
+                  )}
+                  
+                  {/* Texte "Voir plus" au hover */}
+                  <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-500">
+                    <div className="text-white text-center transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
+                      <Sparkles className="w-8 h-8 mx-auto mb-2" />
+                      <span className="text-lg font-bold">Voir plus</span>
                     </div>
                   </div>
-                )}
+                </div>
                 
                 <div className="p-6">
                   <h3 className="text-xl font-bold text-gray-900 mb-2 group-hover:text-orange-600 transition-colors duration-300">
