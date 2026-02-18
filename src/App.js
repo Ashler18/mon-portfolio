@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { Github, Linkedin, Mail, ExternalLink, Star, Sparkles, BookOpen, Code, Briefcase, Heart, Download, X, ChevronLeft, ChevronRight, Menu, Palette, Award, Zap, ArrowRight, ShoppingBag } from 'lucide-react';
 
 export default function Portfolio() {
-  const [activeSection, setActiveSection] = useState('gallery');
+  const [activeSection, setActiveSection] = useState('design');
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [currentImage, setCurrentImage] = useState('');
   const [currentGallery, setCurrentGallery] = useState([]);
@@ -12,6 +12,7 @@ export default function Portfolio() {
 
   // === AJOUT : état pour le carrousel Art-shler ===
   const [artshlerIndex, setArtshlerIndex] = useState(0);
+  const [activeFilter, setActiveFilter] = useState('Tout');
 
   const videoRefs = useRef([]);
   const sectionRefs = {
@@ -109,7 +110,7 @@ export default function Portfolio() {
     document.documentElement.lang = "fr";
 
     const handleScroll = () => {
-      const sections = ['gallery', 'about', 'design', 'projects', 'business', 'publications', 'skills', 'contact'];
+      const sections = ['design', 'projects', 'skills', 'about', 'business', 'gallery', 'publications', 'contact'];
       const scrollPosition = window.scrollY + 150;
 
       for (let i = sections.length - 1; i >= 0; i--) {
@@ -388,6 +389,22 @@ export default function Portfolio() {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-sky-50 via-blue-50/30 to-sky-50 text-gray-900">
+      <style>{`
+        @keyframes twinkle {
+          0%, 100% { opacity: 0.15; transform: scale(0.8); }
+          50% { opacity: 1; transform: scale(1.2); }
+        }
+        @keyframes floatUp {
+          0% { opacity: 0; transform: translateY(18px); }
+          100% { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes orbitSlow {
+          0% { transform: rotate(0deg) translateX(8px) rotate(0deg); }
+          100% { transform: rotate(360deg) translateX(8px) rotate(-360deg); }
+        }
+        .star-twinkle { animation: twinkle ease-in-out infinite; }
+        .tag-cascade { animation: floatUp 0.5s ease forwards; opacity: 0; }
+      `}</style>
       <a 
         href="#main-content" 
         className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-orange-500 focus:text-white focus:rounded-lg font-semibold"
@@ -523,11 +540,12 @@ export default function Portfolio() {
             
             <div className="hidden lg:flex gap-8">
               {[
-                { key: 'gallery', label: 'Galerie' },
-                { key: 'about', label: 'À propos' },
                 { key: 'design', label: 'UX/UI' },
-                { key: 'projects', label: 'Projets' },
+                { key: 'projects', label: 'Projets Dev' },
                 { key: 'skills', label: 'Compétences' },
+                { key: 'about', label: 'À propos' },
+                { key: 'business', label: 'Business' },
+                { key: 'gallery', label: 'Galerie' },
                 { key: 'contact', label: 'Contact' }
               ].map((section) => (
                 <button
@@ -559,11 +577,12 @@ export default function Portfolio() {
           {mobileMenuOpen && (
             <div className="lg:hidden mt-4 space-y-2 pb-4">
               {[
-                { key: 'gallery', label: 'Galerie' },
-                { key: 'about', label: 'À propos' },
                 { key: 'design', label: 'UX/UI' },
-                { key: 'projects', label: 'Projets' },
+                { key: 'projects', label: 'Projets Dev' },
                 { key: 'skills', label: 'Compétences' },
+                { key: 'about', label: 'À propos' },
+                { key: 'business', label: 'Business' },
+                { key: 'gallery', label: 'Galerie' },
                 { key: 'contact', label: 'Contact' }
               ].map((section) => (
                 <button
@@ -650,73 +669,286 @@ export default function Portfolio() {
           </div>
         </section>
 
-        {/* Galerie créative */}
-        <section className="max-w-7xl mx-auto px-4 sm:px-6 py-20" ref={sectionRefs.gallery} aria-labelledby="gallery-title">
-          <div className="text-center mb-16">
-            <h2 id="gallery-title" className="text-5xl sm:text-6xl lg:text-7xl font-bold mb-6 text-gray-900 tracking-tight leading-tight">
-              Créations & Réalisations
-            </h2>
-            <p className="text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed">
-              Une sélection de mes travaux en design, branding et développement web
-            </p>
+        {/* =====================================================
+            SECTION DESIGN UNIFIÉE — Tous projets avec filtres
+        ===================================================== */}
+        <section className="max-w-7xl mx-auto px-4 sm:px-6 py-20" ref={sectionRefs.design} aria-labelledby="design-title">
+          {/* En-tête */}
+          <div className="flex items-center gap-4 mb-8">
+            <div className="p-3 bg-orange-50 rounded-2xl">
+              <Palette className="w-8 h-8 text-orange-600" />
+            </div>
+            <div>
+              <h2 id="design-title" className="text-4xl sm:text-5xl font-bold text-gray-900 tracking-tight leading-tight">
+                Mes Projets
+              </h2>
+              <p className="text-gray-500 mt-1">UX/UI · Développement · Créations graphiques</p>
+            </div>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
-            {creativeWorks.map((work, index) => (
-              <article 
-                key={index}
-                className="group bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 cursor-pointer border border-gray-100"
-                onClick={() => openLightbox(work.image, work.gallery || [work.image])}
-                style={{ animationDelay: `${index * 0.1}s` }}
+          {/* Filtres */}
+          <div className="flex flex-wrap gap-3 mb-10" role="tablist" aria-label="Filtrer les projets">
+            {['Tout', 'UX/UI', 'Graphisme', 'Développement'].map((filter) => (
+              <button
+                key={filter}
+                onClick={() => setActiveFilter(filter)}
+                role="tab"
+                aria-selected={activeFilter === filter}
+                className={`px-5 py-2.5 rounded-full font-semibold text-sm transition-all duration-300 ${
+                  activeFilter === filter
+                    ? 'bg-orange-500 text-white shadow-lg shadow-orange-500/30 scale-105'
+                    : 'bg-white text-gray-600 border border-gray-200 hover:border-orange-300 hover:text-orange-600'
+                }`}
               >
-                <div className="relative overflow-hidden aspect-[4/3]">
-                  <img 
-                    src={work.image} 
-                    alt={work.title}
-                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-gray-900/50 via-gray-900/10 to-transparent"></div>
-                  <div className="absolute inset-0 bg-gradient-to-t from-gray-900/80 via-gray-900/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                  
-                  <div className="absolute top-4 right-4 transform group-hover:scale-110 transition-transform duration-300">
-                    <span className="px-4 py-2 bg-white/95 backdrop-blur-sm text-gray-900 text-xs font-bold rounded-full shadow-lg">
-                      {work.category}
-                    </span>
-                  </div>
-                  
-                  {work.hasVideo && (
-                    <div className="absolute top-4 left-4 transform group-hover:scale-110 transition-transform duration-300">
-                      <span className="px-3 py-2 bg-orange-500/95 backdrop-blur-sm text-white text-xs font-bold rounded-full shadow-lg flex items-center gap-1">
-                        <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
-                          <path d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z"/>
-                        </svg>
-                        Vidéo
-                      </span>
+                {filter}
+              </button>
+            ))}
+          </div>
+
+          {/* ---- BLOC UX/UI — FunkyFlip ---- */}
+          {(activeFilter === 'Tout' || activeFilter === 'UX/UI') && (
+            <div className="mb-10">
+              {activeFilter === 'Tout' && (
+                <h3 className="text-lg font-bold text-gray-400 uppercase tracking-widest mb-5 flex items-center gap-2">
+                  <span className="w-8 h-px bg-orange-300 inline-block"></span>
+                  UX/UI Design
+                </h3>
+              )}
+              <div className="flex flex-col lg:flex-row gap-8 items-start">
+
+                {/* Card FunkyFlip */}
+                <article className="bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-500 hover:-translate-y-1 group border border-gray-100 w-full lg:max-w-2xl">
+                  <div className="grid sm:grid-cols-2 gap-0">
+                    <div
+                      className="relative cursor-zoom-in overflow-hidden h-48 sm:h-full min-h-[180px]"
+                      onClick={() => openLightbox(projectUX.preview, projectUX.gallery)}
+                    >
+                      <img
+                        src={projectUX.preview}
+                        alt={projectUX.title}
+                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-gray-900/40 via-transparent to-transparent"></div>
+                      <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-black/20">
+                        <div className="bg-white/90 backdrop-blur-sm rounded-full p-2 shadow-lg">
+                          <svg className="w-5 h-5 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" />
+                          </svg>
+                        </div>
+                      </div>
+                      <div className="absolute top-3 left-3">
+                        <span className="px-2.5 py-1 bg-orange-500 text-white text-xs font-bold rounded-full">UX/UI</span>
+                      </div>
                     </div>
-                  )}
-                  
-                  <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-500">
-                    <div className="text-white text-center transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
-                      <Sparkles className="w-8 h-8 mx-auto mb-2" />
-                      <span className="text-lg font-bold">Voir plus</span>
+                    <div className="p-6">
+                      <h3 className="text-lg font-bold text-gray-900 mb-1 group-hover:text-orange-600 transition-colors">{projectUX.title}</h3>
+                      <p className="text-orange-600 font-semibold text-xs mb-3">{projectUX.period}</p>
+                      <p className="text-gray-600 mb-4 leading-relaxed text-sm">{projectUX.description}</p>
+                      <div className="flex flex-wrap gap-1.5 mb-4">
+                        {projectUX.tech.slice(0, 4).map((tech, i) => (
+                          <span key={i} className="px-2.5 py-1 bg-orange-50 text-orange-700 font-medium rounded-full text-xs border border-orange-100">{tech}</span>
+                        ))}
+                      </div>
+                      {projectUX.links.figma && (
+                        <a href={projectUX.links.figma} target="_blank" rel="noopener noreferrer"
+                          className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white rounded-xl transition-all font-semibold shadow-md hover:scale-105 duration-300 text-xs">
+                          Voir prototype Figma <ArrowRight className="w-3.5 h-3.5" />
+                        </a>
+                      )}
                     </div>
                   </div>
+                </article>
+
+                {/* Zone décorative droite — étoiles + tags cascade */}
+                <div className="hidden lg:flex flex-col justify-center flex-1 min-h-[260px] relative overflow-hidden rounded-2xl p-7"
+                  style={{ background: 'linear-gradient(135deg, #fff7ed 0%, #fef3c7 50%, #fff 100%)', border: '1px solid #fed7aa' }}>
+
+                  {/* Étoiles animées — vraies tailles variées, positions naturelles */}
+                  {[
+                    { top: '6%',  left: '82%', size: 18, dur: '2.1s', del: '0s'    },
+                    { top: '18%', left: '12%', size: 10, dur: '2.8s', del: '0.4s'  },
+                    { top: '28%', left: '91%', size: 14, dur: '1.9s', del: '0.7s'  },
+                    { top: '48%', left: '6%',  size: 8,  dur: '3.2s', del: '0.2s'  },
+                    { top: '60%', left: '78%', size: 12, dur: '2.4s', del: '1.0s'  },
+                    { top: '72%', left: '45%', size: 7,  dur: '2.0s', del: '0.5s'  },
+                    { top: '82%', left: '88%', size: 16, dur: '2.6s', del: '0.8s'  },
+                    { top: '90%', left: '20%', size: 9,  dur: '1.7s', del: '0.3s'  },
+                    { top: '40%', left: '60%', size: 6,  dur: '3.0s', del: '1.2s'  },
+                  ].map((s, i) => (
+                    <svg
+                      key={i}
+                      className="star-twinkle absolute"
+                      style={{ top: s.top, left: s.left, width: s.size, height: s.size, animationDuration: s.dur, animationDelay: s.del, color: '#f97316' }}
+                      viewBox="0 0 24 24" fill="currentColor"
+                    >
+                      <path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z"/>
+                    </svg>
+                  ))}
+
+
                 </div>
-                
-                <div className="p-6">
-                  <h3 className="text-xl font-bold text-gray-900 mb-2 group-hover:text-orange-600 transition-colors duration-300">
-                    {work.title}
-                  </h3>
-                  <p className="text-sm text-gray-600 leading-relaxed">
-                    {work.description}
-                  </p>
+
+              </div>
+            </div>
+          )}
+
+          {/* ---- BLOC GRAPHISME & CRÉATIONS ---- */}
+          {(activeFilter === 'Tout' || activeFilter === 'Graphisme') && (
+            <div>
+              {activeFilter === 'Tout' && (
+                <h3 className="text-lg font-bold text-gray-400 uppercase tracking-widest mb-5 flex items-center gap-2">
+                  <span className="w-8 h-px bg-orange-300 inline-block"></span>
+                  Graphisme & Créations
+                </h3>
+              )}
+              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+                {creativeWorks.filter(w => w.type !== 'design').map((work, index) => (
+                  <article
+                    key={index}
+                    className="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300 hover:-translate-y-1 group border border-gray-100 cursor-zoom-in"
+                    onClick={() => openLightbox(work.image, work.gallery || [work.image])}
+                  >
+                    <div className="relative overflow-hidden h-36">
+                      <img
+                        src={work.image}
+                        alt={work.title}
+                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-gray-900/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                      <div className="absolute bottom-2 left-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                        <span className="px-2 py-0.5 bg-orange-500 text-white text-xs font-bold rounded-full">{work.category}</span>
+                      </div>
+                    </div>
+                    <div className="p-3">
+                      <h3 className="text-xs font-bold text-gray-900 group-hover:text-orange-600 transition-colors leading-tight">{work.title}</h3>
+                    </div>
+                  </article>
+                ))}
+              </div>
+            </div>
+          )}
+          {/* ---- BLOC DÉVELOPPEMENT ---- */}
+          {(activeFilter === 'Tout' || activeFilter === 'Développement') && (
+            <div className="mb-10">
+              {activeFilter === 'Tout' && (
+                <h3 className="text-lg font-bold text-gray-400 uppercase tracking-widest mb-5 flex items-center gap-2">
+                  <span className="w-8 h-px bg-orange-300 inline-block"></span>
+                  Développement Web
+                </h3>
+              )}
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6" ref={sectionRefs.projects}>
+                {projects.map((project, index) => (
+                  <article
+                    key={index}
+                    className="bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-500 hover:-translate-y-1 group border border-gray-100"
+                  >
+                    <div
+                      className="relative cursor-zoom-in overflow-hidden h-44"
+                      onClick={() => openLightbox(project.preview, project.gallery || [project.preview])}
+                    >
+                      <img
+                        src={project.preview}
+                        alt={project.title}
+                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-gray-900/40 via-transparent to-transparent"></div>
+                      <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-black/20">
+                        <div className="bg-white/90 backdrop-blur-sm rounded-full p-2 shadow-lg">
+                          <svg className="w-5 h-5 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" />
+                          </svg>
+                        </div>
+                      </div>
+                      <div className="absolute top-3 left-3">
+                        <span className="px-2.5 py-1 bg-gray-900/70 backdrop-blur-sm text-white text-xs font-bold rounded-full">Dev</span>
+                      </div>
+                    </div>
+                    <div className="p-5">
+                      <h3 className="text-base font-bold text-gray-900 mb-1 group-hover:text-orange-600 transition-colors">{project.title}</h3>
+                      <p className="text-orange-600 font-semibold text-xs mb-2">{project.period}</p>
+                      <p className="text-gray-600 text-xs mb-3 leading-relaxed line-clamp-2">{project.description}</p>
+                      <div className="flex flex-wrap gap-1.5 mb-3">
+                        {project.tech.slice(0, 3).map((tech, i) => (
+                          <span key={i} className="px-2 py-0.5 bg-gray-50 text-gray-600 text-xs font-medium rounded-full border border-gray-200">{tech}</span>
+                        ))}
+                      </div>
+                      <div className="flex gap-3">
+                        {project.links.github && (
+                          <a href={project.links.github} target="_blank" rel="noopener noreferrer"
+                            className="inline-flex items-center gap-1.5 text-orange-600 hover:text-orange-700 transition-colors font-semibold text-xs">
+                            <Github className="w-4 h-4" /> Code
+                          </a>
+                        )}
+                        {project.links.demo && (
+                          <a href={project.links.demo} target="_blank" rel="noopener noreferrer"
+                            className="inline-flex items-center gap-1.5 text-orange-600 hover:text-orange-700 transition-colors font-semibold text-xs">
+                            <ExternalLink className="w-4 h-4" /> Voir
+                          </a>
+                        )}
+                      </div>
+                    </div>
+                  </article>
+                ))}
+              </div>
+            </div>
+          )}
+
+        </section>
+
+        {/* Entreprise N-kû */}
+        <section className="max-w-7xl mx-auto px-4 sm:px-6 py-20" ref={sectionRefs.skills} aria-labelledby="skills-title">
+          <div className="flex items-center gap-4 mb-12">
+            <div className="p-3 bg-orange-50 rounded-2xl">
+              <Sparkles className="w-8 h-8 text-orange-600" />
+            </div>
+            <h2 id="skills-title" className="text-4xl sm:text-5xl font-bold text-gray-900 tracking-tight leading-tight">
+              Compétences & Passions
+            </h2>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
+            {skills.map((skillGroup, index) => (
+              <article 
+                key={index} 
+                className="bg-white rounded-2xl p-8 shadow-md hover:shadow-xl transition-all duration-500 hover:-translate-y-1 border border-gray-100"
+              >
+                <div className="flex items-center gap-4 mb-6">
+                  <div className="p-3 bg-orange-50 rounded-xl">
+                    {skillGroup.icon}
+                    <span className="text-orange-600">{skillGroup.icon}</span>
+                  </div>
+                  <h3 className="text-2xl font-bold text-gray-900">{skillGroup.category}</h3>
                 </div>
+                <ul className="space-y-3">
+                  {skillGroup.items.map((skill, i) => (
+                    <li key={i} className="flex items-start gap-3 text-gray-700">
+                      <span className="text-orange-500 mt-1 font-bold">•</span>
+                      <span className="leading-relaxed">{skill}</span>
+                    </li>
+                  ))}
+                </ul>
               </article>
             ))}
           </div>
+
+          <div className="bg-white rounded-2xl p-10 shadow-md border border-gray-100">
+            <h3 className="text-3xl font-bold text-gray-900 mb-8 flex items-center gap-3">
+              <Heart className="w-8 h-8 text-orange-600" /> Centres d'intérêt
+            </h3>
+            <div className="flex flex-wrap gap-3">
+              {interests.map((interest, index) => (
+                <span 
+                  key={index} 
+                  className="px-5 py-3 bg-gray-50 border border-gray-200 text-gray-700 font-medium rounded-full hover:bg-orange-50 hover:border-orange-200 hover:text-orange-700 transition-all cursor-default"
+                >
+                  {interest}
+                </span>
+              ))}
+            </div>
+          </div>
         </section>
 
-        {/* À propos */}
+        {/* Contact CTA */}
         <section className="max-w-7xl mx-auto px-4 sm:px-6 py-20" ref={sectionRefs.about} aria-labelledby="about-title">
           <div className="bg-white rounded-3xl p-6 sm:p-10 lg:p-14 shadow-xl border border-gray-100">
             <div className="flex items-center gap-4 mb-10">
@@ -739,8 +971,9 @@ export default function Portfolio() {
                 base technique avant de me spécialiser en design UX/UI.
               </p>
               <p className="text-lg text-gray-700 leading-relaxed">
-                Au-delà du numérique, je dirige N-kû, mon projet e-commerce au Bénin, et explore l'écriture, 
-                l'astronomie et l'IA dans mes temps libres. ✨
+                Au-delà du numérique, je dirige N-kû, mon projet e-commerce au Bénin, j'ai lancé Art-shler — 
+                ma marque textile qui fusionne mes créations graphiques avec de la mode imprimée à la demande — 
+                et j'explore l'écriture, l'astronomie et l'IA dans mes temps libres. 
               </p>
             </div>
 
@@ -790,251 +1023,7 @@ export default function Portfolio() {
           </div>
         </section>
 
-        {/* =====================================================
-            SECTION ART-SHLER — MODIFIÉE
-        ===================================================== */}
-        <section className="max-w-7xl mx-auto px-4 sm:px-6 py-20" aria-labelledby="artshler-title">
-          <div className="relative bg-gradient-to-r from-orange-500 via-orange-600 to-orange-500 rounded-3xl overflow-hidden shadow-2xl shadow-orange-500/30 animate-gradient">
-            <div className="absolute inset-0">
-              <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(255,255,255,0.1),transparent_50%)]"></div>
-            </div>
-
-            <div className="relative p-8 sm:p-12 md:p-16">
-              {/* En-tête */}
-              <div className="text-center text-white mb-10">
-                <h2
-                  id="artshler-title"
-                  className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-4 tracking-tight leading-tight"
-                >
-                  Projet Entrepreneurial<br/>Art-shler
-                </h2>
-                <p className="text-lg sm:text-xl lg:text-2xl text-orange-50 max-w-3xl mx-auto leading-relaxed font-medium">
-                  Marque textile alliant design visuel et vente de produits
-                </p>
-              </div>
-
-              {/* Carrousel */}
-              <div className="relative max-w-4xl mx-auto mb-10">
-                {/* Image principale */}
-                <div className="relative rounded-2xl overflow-hidden aspect-[16/9] bg-black/20 shadow-2xl group/img cursor-zoom-in" onClick={() => openLightbox(artshlerImages[artshlerIndex].src, artshlerImages.map(i => i.src))}>
-                  <img
-                    src={artshlerImages[artshlerIndex].src}
-                    alt={`Art-shler — ${artshlerImages[artshlerIndex].label}`}
-                    className="w-full h-full object-cover transition-all duration-500 group-hover/img:scale-105"
-                    key={artshlerIndex}
-                  />
-                  {/* Overlay dégradé bas */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent"></div>
-                  {/* Icône zoom au hover */}
-                  <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover/img:opacity-100 transition-opacity duration-300 bg-black/20">
-                    <div className="bg-white/90 backdrop-blur-sm rounded-full p-3 shadow-xl">
-                      <svg className="w-7 h-7 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" />
-                      </svg>
-                    </div>
-                  </div>
-
-                  {/* Badge collection */}
-                  <div className="absolute bottom-4 left-4">
-                    <span className="px-4 py-2 bg-white/90 backdrop-blur-sm text-orange-600 text-sm font-bold rounded-full shadow-lg">
-                      {artshlerImages[artshlerIndex].label}
-                    </span>
-                  </div>
-
-                  {/* Boutons prev/next */}
-                  <button
-                    onClick={artshlerPrev}
-                    className="absolute left-3 top-1/2 -translate-y-1/2 p-2 bg-black/40 hover:bg-black/60 text-white rounded-full transition-all backdrop-blur-sm"
-                    aria-label="Image précédente"
-                  >
-                    <ChevronLeft className="w-6 h-6" />
-                  </button>
-                  <button
-                    onClick={artshlerNext}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 p-2 bg-black/40 hover:bg-black/60 text-white rounded-full transition-all backdrop-blur-sm"
-                    aria-label="Image suivante"
-                  >
-                    <ChevronRight className="w-6 h-6" />
-                  </button>
-                </div>
-
-                {/* Miniatures */}
-                <div className="flex gap-2 mt-4 overflow-x-auto pb-2 justify-center flex-wrap">
-                  {artshlerImages.map((img, idx) => (
-                    <button
-                      key={idx}
-                      onClick={() => { setArtshlerIndex(idx); openLightbox(img.src, artshlerImages.map(i => i.src)); }}
-                      className={`flex-shrink-0 w-14 h-14 rounded-xl overflow-hidden border-2 transition-all duration-300 ${
-                        idx === artshlerIndex
-                          ? 'border-white scale-110 shadow-lg'
-                          : 'border-white/30 opacity-60 hover:opacity-90'
-                      }`}
-                      aria-label={`Voir image ${idx + 1}`}
-                    >
-                      <img
-                        src={img.src}
-                        alt={img.label}
-                        className="w-full h-full object-cover"
-                      />
-                    </button>
-                  ))}
-                </div>
-
-                {/* Compteur */}
-                <div className="text-center text-white/80 text-sm mt-3 font-medium">
-                  {artshlerIndex + 1} / {artshlerImages.length}
-                </div>
-              </div>
-
-              {/* Bouton Voir la boutique */}
-              <div className="text-center">
-                <a
-                  href="https://art-shler.myspreadshop.fr/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-3 px-10 py-5 bg-white hover:bg-orange-50 text-orange-600 rounded-2xl text-xl font-bold shadow-2xl hover:scale-105 transition-all duration-300"
-                  aria-label="Voir la boutique Art-shler"
-                >
-                  <ShoppingBag className="w-6 h-6" />
-                  Voir la boutique
-                  <ArrowRight className="w-6 h-6" />
-                </a>
-              </div>
-            </div>
-          </div>
-        </section>
-        {/* =====================================================
-            FIN SECTION ART-SHLER
-        ===================================================== */}
-
         {/* Design UX/UI */}
-        <section className="max-w-7xl mx-auto px-4 sm:px-6 py-20" ref={sectionRefs.design} aria-labelledby="design-title">
-          <div className="flex items-center gap-4 mb-12">
-            <div className="p-3 bg-orange-50 rounded-2xl">
-              <Palette className="w-8 h-8 text-orange-600" />
-            </div>
-            <h2 id="design-title" className="text-4xl sm:text-5xl font-bold text-gray-900 tracking-tight leading-tight">
-              Projet Design UX/UI
-            </h2>
-          </div>
-
-          <article className="bg-white rounded-3xl overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-500 group border border-gray-100">
-            <div className="grid md:grid-cols-2 gap-0">
-              <div 
-                className="relative cursor-pointer overflow-hidden"
-                onClick={() => openLightbox(projectUX.preview, projectUX.gallery)}
-              >
-                <img 
-                  src={projectUX.preview} 
-                  alt={projectUX.title}
-                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-gray-900/50 via-gray-900/20 to-transparent"></div>
-                <div className="absolute inset-0 bg-gradient-to-t from-gray-900/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-              </div>
-              
-              <div className="p-10">
-                <h3 className="text-3xl font-bold text-gray-900 mb-3">{projectUX.title}</h3>
-                <p className="text-orange-600 font-semibold mb-6">{projectUX.period}</p>
-                <p className="text-gray-700 mb-8 leading-relaxed text-lg">{projectUX.description}</p>
-                
-                <div className="flex flex-wrap gap-3 mb-8">
-                  {projectUX.tech.map((tech, i) => (
-                    <span key={i} className="px-4 py-2 bg-gray-50 border border-gray-200 text-gray-700 font-medium rounded-full text-sm">
-                      {tech}
-                    </span>
-                  ))}
-                </div>
-
-                {projectUX.links.figma && (
-                  <a 
-                    href={projectUX.links.figma} 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white rounded-xl transition-all font-semibold shadow-lg shadow-orange-500/25 hover:shadow-xl hover:shadow-orange-500/40 hover:scale-105 duration-300 text-lg"
-                  >
-                    Voir le prototype Figma <ArrowRight className="w-5 h-5" />
-                  </a>
-                )}
-              </div>
-            </div>
-          </article>
-        </section>
-
-        {/* Projets de développement */}
-        <section className="max-w-7xl mx-auto px-4 sm:px-6 py-20" ref={sectionRefs.projects} aria-labelledby="projects-title">
-          <div className="flex items-center gap-4 mb-12">
-            <div className="p-3 bg-orange-50 rounded-2xl">
-              <Code className="w-8 h-8 text-orange-600" />
-            </div>
-            <h2 id="projects-title" className="text-4xl sm:text-5xl font-bold text-gray-900 tracking-tight leading-tight">
-              Projets de Développement
-            </h2>
-          </div>
-
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            {projects.map((project, index) => (
-              <article 
-                key={index} 
-                className="bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 group border border-gray-100"
-              >
-                <div 
-                  className="relative cursor-pointer overflow-hidden h-56"
-                  onClick={() => openLightbox(project.preview, project.gallery || [project.preview])}
-                >
-                  <img 
-                    src={project.preview} 
-                    alt={project.title}
-                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-gray-900/40 via-gray-900/10 to-transparent"></div>
-                  <div className="absolute inset-0 bg-gradient-to-t from-gray-900/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                </div>
-                
-                <div className="p-8">
-                  <h3 className="text-2xl font-bold text-gray-900 mb-2 group-hover:text-orange-600 transition-colors">
-                    {project.title}
-                  </h3>
-                  <p className="text-orange-600 font-semibold text-sm mb-4">{project.period}</p>
-                  <p className="text-gray-700 mb-6 leading-relaxed">{project.description}</p>
-                  
-                  <div className="flex flex-wrap gap-2 mb-6">
-                    {project.tech.map((tech, i) => (
-                      <span key={i} className="px-3 py-1 bg-gray-50 text-gray-700 text-xs font-medium rounded-full border border-gray-200">
-                        {tech}
-                      </span>
-                    ))}
-                  </div>
-
-                  <div className="flex gap-4 flex-wrap">
-                    {project.links.github && (
-                      <a 
-                        href={project.links.github} 
-                        target="_blank" 
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center gap-2 text-orange-600 hover:text-orange-700 transition-colors font-semibold"
-                      >
-                        <Github className="w-5 h-5" /> Code source
-                      </a>
-                    )}
-                    {project.links.demo && (
-                      <a 
-                        href={project.links.demo} 
-                        target="_blank" 
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center gap-2 text-orange-600 hover:text-orange-700 transition-colors font-semibold"
-                      >
-                        <ExternalLink className="w-5 h-5" /> Voir le site
-                      </a>
-                    )}
-                  </div>
-                </div>
-              </article>
-            ))}
-          </div>
-        </section>
-
-        {/* Entreprise N-kû */}
         <section className="max-w-7xl mx-auto px-4 sm:px-6 py-20" ref={sectionRefs.business} aria-labelledby="business-title">
           <div className="bg-white rounded-3xl p-10 sm:p-14 shadow-xl border border-gray-100">
             <div className="flex items-center gap-4 mb-12">
@@ -1047,6 +1036,32 @@ export default function Portfolio() {
             </div>
             
             <div className="space-y-10">
+              {/* Art-shler EN PREMIER */}
+              <article className="bg-orange-50 rounded-2xl p-5 sm:p-6 lg:p-8 border border-orange-100 hover:shadow-lg transition-all duration-300">
+                <div className="flex items-center gap-4 mb-6">
+                  <div className="w-20 h-20 rounded-2xl bg-orange-500 flex items-center justify-center shadow-md">
+                    <ShoppingBag className="w-10 h-10 text-white" />
+                  </div>
+                  <div>
+                    <h3 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900">Art-shler 👗</h3>
+                    <p className="text-orange-600 font-semibold text-sm sm:text-base">Brand Designer & Fondatrice | Depuis 2026</p>
+                  </div>
+                </div>
+                <p className="text-gray-700 mb-6 leading-relaxed text-lg">
+                  Marque textile née de mes créations graphiques originales. 5 collections imprimées à la demande 
+                  sur Spreadshirt — de la conception du design jusqu'à la mise en vente.
+                </p>
+                <div className="flex flex-wrap gap-3 mb-6">
+                  {["Identité de marque", "Design textile", "5 collections", "Impression à la demande"].map((tag, i) => (
+                    <span key={i} className="px-4 py-2 bg-white border border-orange-200 text-orange-700 font-medium rounded-full text-sm">{tag}</span>
+                  ))}
+                </div>
+                <a href="https://art-shler.myspreadshop.fr/" target="_blank" rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 px-6 py-3 bg-orange-500 hover:bg-orange-600 text-white rounded-xl font-semibold shadow-md hover:scale-105 transition-all duration-300 text-sm">
+                  <ShoppingBag className="w-4 h-4" /> Voir la boutique <ArrowRight className="w-4 h-4" />
+                </a>
+              </article>
+
               <article className="bg-gray-50 rounded-2xl p-5 sm:p-6 lg:p-8 border border-gray-100 hover:shadow-lg transition-all duration-300">
                 <div className="flex items-center gap-4 mb-6">
                   <img 
@@ -1135,6 +1150,72 @@ export default function Portfolio() {
         </section>
 
         {/* Publications */}
+        <section className="max-w-7xl mx-auto px-4 sm:px-6 py-20" ref={sectionRefs.gallery} aria-labelledby="gallery-title">
+          <div className="text-center mb-16">
+            <h2 id="gallery-title" className="text-5xl sm:text-6xl lg:text-7xl font-bold mb-6 text-gray-900 tracking-tight leading-tight">
+              Créations & Réalisations
+            </h2>
+            <p className="text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed">
+              Une sélection de mes travaux en design, branding et développement web
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+            {creativeWorks.map((work, index) => (
+              <article 
+                key={index}
+                className="group bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 cursor-pointer border border-gray-100"
+                onClick={() => openLightbox(work.image, work.gallery || [work.image])}
+                style={{ animationDelay: `${index * 0.1}s` }}
+              >
+                <div className="relative overflow-hidden aspect-[4/3]">
+                  <img 
+                    src={work.image} 
+                    alt={work.title}
+                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-gray-900/50 via-gray-900/10 to-transparent"></div>
+                  <div className="absolute inset-0 bg-gradient-to-t from-gray-900/80 via-gray-900/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                  
+                  <div className="absolute top-4 right-4 transform group-hover:scale-110 transition-transform duration-300">
+                    <span className="px-4 py-2 bg-white/95 backdrop-blur-sm text-gray-900 text-xs font-bold rounded-full shadow-lg">
+                      {work.category}
+                    </span>
+                  </div>
+                  
+                  {work.hasVideo && (
+                    <div className="absolute top-4 left-4 transform group-hover:scale-110 transition-transform duration-300">
+                      <span className="px-3 py-2 bg-orange-500/95 backdrop-blur-sm text-white text-xs font-bold rounded-full shadow-lg flex items-center gap-1">
+                        <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                          <path d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z"/>
+                        </svg>
+                        Vidéo
+                      </span>
+                    </div>
+                  )}
+                  
+                  <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-500">
+                    <div className="text-white text-center transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
+                      <Sparkles className="w-8 h-8 mx-auto mb-2" />
+                      <span className="text-lg font-bold">Voir plus</span>
+                    </div>
+                  </div>
+                </div>
+                
+                <div className="p-6">
+                  <h3 className="text-xl font-bold text-gray-900 mb-2 group-hover:text-orange-600 transition-colors duration-300">
+                    {work.title}
+                  </h3>
+                  <p className="text-sm text-gray-600 leading-relaxed">
+                    {work.description}
+                  </p>
+                </div>
+              </article>
+            ))}
+          </div>
+        </section>
+
+        {/* À propos */}
         <section className="max-w-7xl mx-auto px-4 sm:px-6 py-20" ref={sectionRefs.publications} aria-labelledby="publications-title">
           <div className="bg-white rounded-3xl p-6 sm:p-10 lg:p-14 shadow-xl border border-gray-100">
             <div className="flex items-center gap-4 mb-10">
@@ -1175,65 +1256,12 @@ export default function Portfolio() {
         </section>
 
         {/* Compétences */}
-        <section className="max-w-7xl mx-auto px-4 sm:px-6 py-20" ref={sectionRefs.skills} aria-labelledby="skills-title">
-          <div className="flex items-center gap-4 mb-12">
-            <div className="p-3 bg-orange-50 rounded-2xl">
-              <Sparkles className="w-8 h-8 text-orange-600" />
-            </div>
-            <h2 id="skills-title" className="text-4xl sm:text-5xl font-bold text-gray-900 tracking-tight leading-tight">
-              Compétences & Passions
-            </h2>
-          </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
-            {skills.map((skillGroup, index) => (
-              <article 
-                key={index} 
-                className="bg-white rounded-2xl p-8 shadow-md hover:shadow-xl transition-all duration-500 hover:-translate-y-1 border border-gray-100"
-              >
-                <div className="flex items-center gap-4 mb-6">
-                  <div className="p-3 bg-orange-50 rounded-xl">
-                    {skillGroup.icon}
-                    <span className="text-orange-600">{skillGroup.icon}</span>
-                  </div>
-                  <h3 className="text-2xl font-bold text-gray-900">{skillGroup.category}</h3>
-                </div>
-                <ul className="space-y-3">
-                  {skillGroup.items.map((skill, i) => (
-                    <li key={i} className="flex items-start gap-3 text-gray-700">
-                      <span className="text-orange-500 mt-1 font-bold">•</span>
-                      <span className="leading-relaxed">{skill}</span>
-                    </li>
-                  ))}
-                </ul>
-              </article>
-            ))}
-          </div>
-
-          <div className="bg-white rounded-2xl p-10 shadow-md border border-gray-100">
-            <h3 className="text-3xl font-bold text-gray-900 mb-8 flex items-center gap-3">
-              <Heart className="w-8 h-8 text-orange-600" /> Centres d'intérêt
-            </h3>
-            <div className="flex flex-wrap gap-3">
-              {interests.map((interest, index) => (
-                <span 
-                  key={index} 
-                  className="px-5 py-3 bg-gray-50 border border-gray-200 text-gray-700 font-medium rounded-full hover:bg-orange-50 hover:border-orange-200 hover:text-orange-700 transition-all cursor-default"
-                >
-                  {interest}
-                </span>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* Contact CTA */}
         <section className="max-w-7xl mx-auto px-4 sm:px-6 py-20" ref={sectionRefs.contact} aria-labelledby="contact-title">
           <div className="relative bg-gradient-to-r from-orange-500 via-orange-600 to-orange-500 rounded-3xl overflow-hidden shadow-2xl shadow-orange-500/30">
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(255,255,255,0.1),transparent_50%)]"></div>
             <div className="relative p-12 sm:p-16 text-center text-white">
               <h2 id="contact-title" className="text-5xl sm:text-6xl font-bold mb-6 tracking-tight">
-                Travaillons ensemble ! ✨
+                Travaillons ensemble ! 
               </h2>
               <p className="text-xl text-orange-50 mb-10 max-w-2xl mx-auto leading-relaxed font-medium">
                 Vous avez un projet en design UI/UX ou développement frontend ? 
