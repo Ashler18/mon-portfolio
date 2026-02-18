@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Github, Linkedin, Mail, ExternalLink, Star, Sparkles, BookOpen, Code, Briefcase, Heart, Download, X, ChevronLeft, ChevronRight, Menu, Palette, Award, Zap, ArrowRight } from 'lucide-react';
+import { Github, Linkedin, Mail, ExternalLink, Star, Sparkles, BookOpen, Code, Briefcase, Heart, Download, X, ChevronLeft, ChevronRight, Menu, Palette, Award, Zap, ArrowRight, ShoppingBag } from 'lucide-react';
 
 export default function Portfolio() {
   const [activeSection, setActiveSection] = useState('gallery');
@@ -9,7 +9,10 @@ export default function Portfolio() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [cvModalOpen, setCvModalOpen] = useState(false);
-  
+
+  // === AJOUT : état pour le carrousel Art-shler ===
+  const [artshlerIndex, setArtshlerIndex] = useState(0);
+
   const videoRefs = useRef([]);
   const sectionRefs = {
     gallery: useRef(null),
@@ -21,6 +24,36 @@ export default function Portfolio() {
     skills: useRef(null),
     contact: useRef(null)
   };
+
+  // === AJOUT : images Art-shler (ordre : oush en premier) ===
+  const artshlerImages = [
+    { src: process.env.PUBLIC_URL + '/images/oush_image1.jpg', label: 'Oush' },
+    { src: process.env.PUBLIC_URL + '/images/oush_image2.jpg', label: 'Oush' },
+    { src: process.env.PUBLIC_URL + '/images/oush_image3.jpg', label: 'Oush' },
+    { src: process.env.PUBLIC_URL + '/images/rbrea_image1.jpg', label: 'Rbrea' },
+    { src: process.env.PUBLIC_URL + '/images/rbrea_image2.jpg', label: 'Rbrea' },
+    { src: process.env.PUBLIC_URL + '/images/rbrea_image3.jpg', label: 'Rbrea' },
+    { src: process.env.PUBLIC_URL + '/images/freearoa_image1.jpg', label: 'Freearoa' },
+    { src: process.env.PUBLIC_URL + '/images/freearoa_image2.jpg', label: 'Freearoa' },
+    { src: process.env.PUBLIC_URL + '/images/ugile_image1.jpg', label: 'Ugile' },
+    { src: process.env.PUBLIC_URL + '/images/ugile_image2.jpg', label: 'Ugile' },
+    { src: process.env.PUBLIC_URL + '/images/ugile_image3.jpg', label: 'Ugile' },
+    { src: process.env.PUBLIC_URL + '/images/ugile_image4.jpg', label: 'Ugile' },
+    { src: process.env.PUBLIC_URL + '/images/vdoa_image1.jpg', label: 'Vdoa' },
+    { src: process.env.PUBLIC_URL + '/images/vdoa_image2.jpg', label: 'Vdoa' },
+    { src: process.env.PUBLIC_URL + '/images/vdoa_image3.jpg', label: 'Vdoa' },
+  ];
+
+  // === AJOUT : défilement automatique toutes les 3 secondes ===
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setArtshlerIndex((prev) => (prev + 1) % artshlerImages.length);
+    }, 3000);
+    return () => clearInterval(interval);
+  }, [artshlerImages.length]);
+
+  const artshlerPrev = () => setArtshlerIndex((prev) => (prev - 1 + artshlerImages.length) % artshlerImages.length);
+  const artshlerNext = () => setArtshlerIndex((prev) => (prev + 1) % artshlerImages.length);
 
   const scrollToSection = (section) => {
     setActiveSection(section);
@@ -447,7 +480,6 @@ export default function Portfolio() {
             </>
           )}
           
-          {/* Affichage conditionnel : Vidéo ou Image */}
           {currentImage && (currentImage.endsWith('.mp4') || currentImage.endsWith('.webm') || currentImage.endsWith('.mov')) ? (
             <video 
               src={currentImage} 
@@ -637,26 +669,21 @@ export default function Portfolio() {
                 onClick={() => openLightbox(work.image, work.gallery || [work.image])}
                 style={{ animationDelay: `${index * 0.1}s` }}
               >
-                {/* Image principale */}
                 <div className="relative overflow-hidden aspect-[4/3]">
                   <img 
                     src={work.image} 
                     alt={work.title}
                     className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                   />
-                  {/* Voile permanent doux */}
                   <div className="absolute inset-0 bg-gradient-to-t from-gray-900/50 via-gray-900/10 to-transparent"></div>
-                  {/* Voile au hover renforcé */}
                   <div className="absolute inset-0 bg-gradient-to-t from-gray-900/80 via-gray-900/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                   
-                  {/* Badge catégorie */}
                   <div className="absolute top-4 right-4 transform group-hover:scale-110 transition-transform duration-300">
                     <span className="px-4 py-2 bg-white/95 backdrop-blur-sm text-gray-900 text-xs font-bold rounded-full shadow-lg">
                       {work.category}
                     </span>
                   </div>
                   
-                  {/* Badge Vidéo si hasVideo */}
                   {work.hasVideo && (
                     <div className="absolute top-4 left-4 transform group-hover:scale-110 transition-transform duration-300">
                       <span className="px-3 py-2 bg-orange-500/95 backdrop-blur-sm text-white text-xs font-bold rounded-full shadow-lg flex items-center gap-1">
@@ -668,7 +695,6 @@ export default function Portfolio() {
                     </div>
                   )}
                   
-                  {/* Texte "Voir plus" au hover */}
                   <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-500">
                     <div className="text-white text-center transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
                       <Sparkles className="w-8 h-8 mx-auto mb-2" />
@@ -764,29 +790,122 @@ export default function Portfolio() {
           </div>
         </section>
 
-        {/* Projet Art-shler Teaser - ORANGE FLAMME */}
-        <section className="max-w-7xl mx-auto px-4 sm:px-6 py-20">
+        {/* =====================================================
+            SECTION ART-SHLER — MODIFIÉE
+        ===================================================== */}
+        <section className="max-w-7xl mx-auto px-4 sm:px-6 py-20" aria-labelledby="artshler-title">
           <div className="relative bg-gradient-to-r from-orange-500 via-orange-600 to-orange-500 rounded-3xl overflow-hidden shadow-2xl shadow-orange-500/30 animate-gradient">
             <div className="absolute inset-0">
               <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(255,255,255,0.1),transparent_50%)]"></div>
             </div>
-            <div className="relative p-8 sm:p-12 md:p-16 text-center text-white">
-              <div className="inline-flex items-center gap-2 px-5 py-2 bg-white/20 backdrop-blur-sm rounded-full text-white text-sm font-bold mb-6 animate-pulse">
-                <Sparkles className="w-5 h-5" />
-                COMING SOON
+
+            <div className="relative p-8 sm:p-12 md:p-16">
+              {/* En-tête */}
+              <div className="text-center text-white mb-10">
+                <h2
+                  id="artshler-title"
+                  className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-4 tracking-tight leading-tight"
+                >
+                  Projet Entrepreneurial<br/>Art-shler
+                </h2>
+                <p className="text-lg sm:text-xl lg:text-2xl text-orange-50 max-w-3xl mx-auto leading-relaxed font-medium">
+                  Marque textile alliant design visuel et vente de produits
+                </p>
               </div>
-              <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-6 tracking-tight leading-tight">
-                Projet Entrepreneurial<br/>Art-shler
-              </h2>
-              <p className="text-lg sm:text-xl lg:text-2xl text-orange-50 mb-8 max-w-3xl mx-auto leading-relaxed font-medium px-4">
-                Marque textile alliant design visuel et vente de produits<br className="hidden sm:block"/>Brand Design en cours
-              </p>
-              <div className="inline-flex items-center gap-3 px-6 py-3 sm:px-8 sm:py-4 bg-white text-orange-600 rounded-full text-2xl sm:text-3xl lg:text-4xl font-bold shadow-2xl">
-                <span>Février 2026</span>
+
+              {/* Carrousel */}
+              <div className="relative max-w-4xl mx-auto mb-10">
+                {/* Image principale */}
+                <div className="relative rounded-2xl overflow-hidden aspect-[16/9] bg-black/20 shadow-2xl group/img cursor-zoom-in" onClick={() => openLightbox(artshlerImages[artshlerIndex].src, artshlerImages.map(i => i.src))}>
+                  <img
+                    src={artshlerImages[artshlerIndex].src}
+                    alt={`Art-shler — ${artshlerImages[artshlerIndex].label}`}
+                    className="w-full h-full object-cover transition-all duration-500 group-hover/img:scale-105"
+                    key={artshlerIndex}
+                  />
+                  {/* Overlay dégradé bas */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent"></div>
+                  {/* Icône zoom au hover */}
+                  <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover/img:opacity-100 transition-opacity duration-300 bg-black/20">
+                    <div className="bg-white/90 backdrop-blur-sm rounded-full p-3 shadow-xl">
+                      <svg className="w-7 h-7 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" />
+                      </svg>
+                    </div>
+                  </div>
+
+                  {/* Badge collection */}
+                  <div className="absolute bottom-4 left-4">
+                    <span className="px-4 py-2 bg-white/90 backdrop-blur-sm text-orange-600 text-sm font-bold rounded-full shadow-lg">
+                      {artshlerImages[artshlerIndex].label}
+                    </span>
+                  </div>
+
+                  {/* Boutons prev/next */}
+                  <button
+                    onClick={artshlerPrev}
+                    className="absolute left-3 top-1/2 -translate-y-1/2 p-2 bg-black/40 hover:bg-black/60 text-white rounded-full transition-all backdrop-blur-sm"
+                    aria-label="Image précédente"
+                  >
+                    <ChevronLeft className="w-6 h-6" />
+                  </button>
+                  <button
+                    onClick={artshlerNext}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 p-2 bg-black/40 hover:bg-black/60 text-white rounded-full transition-all backdrop-blur-sm"
+                    aria-label="Image suivante"
+                  >
+                    <ChevronRight className="w-6 h-6" />
+                  </button>
+                </div>
+
+                {/* Miniatures */}
+                <div className="flex gap-2 mt-4 overflow-x-auto pb-2 justify-center flex-wrap">
+                  {artshlerImages.map((img, idx) => (
+                    <button
+                      key={idx}
+                      onClick={() => { setArtshlerIndex(idx); openLightbox(img.src, artshlerImages.map(i => i.src)); }}
+                      className={`flex-shrink-0 w-14 h-14 rounded-xl overflow-hidden border-2 transition-all duration-300 ${
+                        idx === artshlerIndex
+                          ? 'border-white scale-110 shadow-lg'
+                          : 'border-white/30 opacity-60 hover:opacity-90'
+                      }`}
+                      aria-label={`Voir image ${idx + 1}`}
+                    >
+                      <img
+                        src={img.src}
+                        alt={img.label}
+                        className="w-full h-full object-cover"
+                      />
+                    </button>
+                  ))}
+                </div>
+
+                {/* Compteur */}
+                <div className="text-center text-white/80 text-sm mt-3 font-medium">
+                  {artshlerIndex + 1} / {artshlerImages.length}
+                </div>
+              </div>
+
+              {/* Bouton Voir la boutique */}
+              <div className="text-center">
+                <a
+                  href="https://art-shler.myspreadshop.fr/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-3 px-10 py-5 bg-white hover:bg-orange-50 text-orange-600 rounded-2xl text-xl font-bold shadow-2xl hover:scale-105 transition-all duration-300"
+                  aria-label="Voir la boutique Art-shler"
+                >
+                  <ShoppingBag className="w-6 h-6" />
+                  Voir la boutique
+                  <ArrowRight className="w-6 h-6" />
+                </a>
               </div>
             </div>
           </div>
         </section>
+        {/* =====================================================
+            FIN SECTION ART-SHLER
+        ===================================================== */}
 
         {/* Design UX/UI */}
         <section className="max-w-7xl mx-auto px-4 sm:px-6 py-20" ref={sectionRefs.design} aria-labelledby="design-title">
