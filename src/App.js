@@ -627,8 +627,7 @@ export default function Portfolio() {
                 Designer UI/UX & Créatrice Visuelle
               </p>
               <p className="text-lg text-gray-700 mb-8 leading-relaxed animate-fadeInUp" style={{animationDelay: '0.4s'}}>
-                Étudiante en MBA UI/UX, je conçois des interfaces claires, esthétiques et accessibles (normes RGAA). 
-                Mon approche combine sensibilité artistique et compréhension des contraintes techniques.
+                Designer UI/UX orientée expérience utilisateur et accessibilité, avec une double compétence en conception et intégration front-end
               </p>
               <div className="flex gap-4 justify-center lg:justify-start flex-wrap animate-fadeInUp" style={{animationDelay: '0.5s'}}>
                 <a
@@ -962,8 +961,8 @@ export default function Portfolio() {
             
             <div className="prose prose-lg max-w-none">
               <p className="text-lg text-gray-700 leading-relaxed mb-6">
-                Étudiante en MBA UI/UX, je conçois des interfaces claires, esthétiques et accessibles (normes RGAA). 
-                Mon approche combine sensibilité artistique et compréhension des contraintes techniques.
+                Designer UI/UX orientée expérience utilisateur et accessibilité, avec une double compétence en conception et intégration front-end. 
+          
               </p>
               <p className="text-lg text-gray-700 leading-relaxed mb-6">
                 Passionnée par le design visuel, j'accompagne mes projets de l'identité graphique au prototypage. 
@@ -971,8 +970,8 @@ export default function Portfolio() {
                 base technique avant de me spécialiser en design UX/UI.
               </p>
               <p className="text-lg text-gray-700 leading-relaxed">
-                Au-delà du numérique, je dirige N-kû, mon projet e-commerce au Bénin, j'ai lancé Art-shler — 
-                ma marque textile qui fusionne mes créations graphiques avec de la mode imprimée à la demande — 
+                Au-delà du numérique, je dirige N-kû, mon projet e-commerce au Bénin, j'ai lancé Art-shler
+                ma marque textile qui fusionne mes créations graphiques avec de la mode imprimée à la demande
                 et j'explore l'écriture, l'astronomie et l'IA dans mes temps libres. 
               </p>
             </div>
@@ -1048,8 +1047,8 @@ export default function Portfolio() {
                   </div>
                 </div>
                 <p className="text-gray-700 mb-6 leading-relaxed text-lg">
-                  Marque textile née de mes créations graphiques originales. 5 collections imprimées à la demande 
-                  sur Spreadshirt — de la conception du design jusqu'à la mise en vente.
+                  Marque textile née de mes créations graphiques originales. 05 collections imprimées à la demande 
+                  sur Spreadshirt, de la conception du design jusqu'à la mise en vente.
                 </p>
                 <div className="flex flex-wrap gap-3 mb-6">
                   {["Identité de marque", "Design textile", "5 collections", "Impression à la demande"].map((tag, i) => (
