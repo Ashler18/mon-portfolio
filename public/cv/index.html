@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Ashler DELEKE — UX/UI Designer &amp; Product Designer · CV</title>
+<meta name="description" content="CV d'Ashler DELEKE, UX/UI Designer & Product Designer en recherche d'alternance. UX Research, UI Design, Product Design, support applicatif et développement front-end." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+  /*
+    CV optimisé pour la lecture automatisée (ATS) :
+    - une seule colonne, ordre du DOM = ordre de lecture du PDF
+    - aucun letter-spacing : il se traduit en espaces parasites à l'extraction
+      (« E X P É R I E N C E » au lieu de « EXPÉRIENCE »)
+    - aucun élément positionné ni z-index, qui réordonnent le flux de texte
+    - aucune image, aucun tableau, aucune icône porteuse d'information
+    - intitulés de section standards, URL et puces écrites en vrais caractères
+
+    Tout l'habillage animé vit dans @media screen : l'impression et donc le PDF
+    envoyé aux recruteurs restent strictement identiques à la version d'origine.
+  */
+
+  :root {
+    --ink: #0f172a;
+    --ink-2: #1e293b;
+    --body: #334155;
+    --muted: #5a6b80;
+    --line: #d8e0ea;
+    --accent: #ea580c;
+    --accent-2: #fb923c;
+    --pad-x: 15mm;
+    --ease: cubic-bezier(0.16, 0.84, 0.44, 1);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { background: #eceff3; }
+
+  body {
+    font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+    font-size: 8.6pt;
+    line-height: 1.36;
+    color: var(--body);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .page {
+    width: 210mm;
+    min-height: 297mm;
+    margin: 0 auto;
+    background: #fff;
+    padding: 11mm var(--pad-x) 8mm;
+  }
+
+  /* ---------- Identité ---------- */
+
+  .name {
+    font-size: 20pt;
+    font-weight: 700;
+    line-height: 1.04;
+    color: var(--ink);
+  }
+
+  .headline {
+    font-size: 10pt;
+    font-weight: 600;
+    color: var(--accent);
+    margin-top: 1.4mm;
+  }
+
+  .contact {
+    font-size: 8.5pt;
+    color: var(--ink-2);
+    margin-top: 2.2mm;
+    line-height: 1.45;
+  }
+
+  .availability {
+    font-size: 8.5pt;
+    font-weight: 600;
+    color: var(--ink);
+    margin-top: 1.2mm;
+    padding-top: 1.5mm;
+    border-top: 0.3mm solid var(--line);
+  }
+
+  /* ---------- Sections ---------- */
+
+  section { margin-top: 2.5mm; }
+
+  h2 {
+    font-size: 9.4pt;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: var(--ink);
+    border-bottom: 0.55mm solid var(--accent);
+    padding-bottom: 0.7mm;
+    margin-bottom: 1.6mm;
+  }
+
+  p { margin: 0; }
+
+  .summary { line-height: 1.42; }
+
+  /* ---------- Compétences ---------- */
+
+  .skill + .skill { margin-top: 1mm; }
+  .skill b { font-weight: 600; color: var(--ink); }
+
+  /* ---------- Expériences ---------- */
+
+  .job + .job { margin-top: 2.2mm; }
+
+  .job-line {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 6mm;
+  }
+
+  .job-title {
+    font-size: 9.2pt;
+    font-weight: 700;
+    color: var(--ink);
+    line-height: 1.28;
+  }
+
+  .job-date {
+    flex: none;
+    font-size: 8.3pt;
+    font-weight: 600;
+    color: var(--muted);
+    white-space: nowrap;
+  }
+
+  .job-meta {
+    font-size: 8.4pt;
+    font-weight: 500;
+    color: var(--accent);
+    margin-top: 0.3mm;
+  }
+
+  ul {
+    margin: 1mm 0 0;
+    padding-left: 4.2mm;
+    list-style: none;
+  }
+
+  li {
+    text-indent: -4.2mm;
+    padding-left: 4.2mm;
+  }
+
+  /* puce en vrai caractère : les marqueurs CSS natifs ne sont pas toujours
+     restitués dans le flux de texte du PDF */
+  li::before {
+    content: '• ';
+    font-weight: 700;
+    color: var(--accent);
+  }
+
+  li + li { margin-top: 0.4mm; }
+
+  li b { font-weight: 600; color: var(--ink-2); }
+
+  /* ---------- Formation, certifications ---------- */
+
+  .row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 6mm;
+  }
+
+  .row + .row { margin-top: 1mm; }
+
+  .row .what b { font-weight: 700; color: var(--ink); }
+
+  .row .when {
+    flex: none;
+    font-size: 8.3pt;
+    font-weight: 600;
+    color: var(--muted);
+    white-space: nowrap;
+  }
+
+  .inline b { font-weight: 600; color: var(--ink); }
+  .inline + .inline { margin-top: 1mm; }
+
+  /* ---------- Aperçu écran : mise en scène et survols ---------- */
+
+  @media screen {
+    body { padding: 12mm 0; }
+
+    /* fond vivant : trois halos qui dérivent lentement derrière la feuille */
+    html {
+      background-color: #e6eaf0;
+      background-image:
+        radial-gradient(38rem 38rem at 12% 16%, rgba(234, 88, 12, 0.18), transparent 62%),
+        radial-gradient(34rem 34rem at 88% 10%, rgba(51, 105, 184, 0.16), transparent 62%),
+        radial-gradient(42rem 42rem at 74% 90%, rgba(234, 88, 12, 0.12), transparent 62%);
+      background-attachment: fixed;
+      animation: aurora 26s ease-in-out infinite alternate;
+    }
+
+    @keyframes aurora {
+      to { background-position: 7% -5%, -6% 6%, -5% -7%; }
+    }
+
+    /* la feuille : entrée en fondu, liseré coloré qui se dessine, relief au survol */
+    .page {
+      box-shadow: 0 2mm 12mm rgba(15, 23, 42, 0.18);
+      background-image: linear-gradient(90deg, var(--accent), var(--accent-2) 55%, #f59e0b);
+      background-repeat: no-repeat;
+      background-position: left top;
+      background-size: 0 1.1mm;
+      animation:
+        sheetIn 0.9s var(--ease) both,
+        drawBar 1.1s var(--ease) 0.25s both;
+      transition: box-shadow 0.6s var(--ease);
+    }
+
+    .page:hover { box-shadow: 0 5mm 26mm rgba(15, 23, 42, 0.24); }
+
+    @keyframes sheetIn {
+      from { opacity: 0; transform: translateY(4mm) scale(0.995); }
+    }
+
+    @keyframes drawBar {
+      to { background-size: 100% 1.1mm; }
+    }
+
+    /* apparition en cascade des blocs */
+    header,
+    section { animation: riseIn 0.7s var(--ease) both; }
+
+    header { animation-delay: 0.2s; }
+    section:nth-of-type(1) { animation-delay: 0.32s; }
+    section:nth-of-type(2) { animation-delay: 0.41s; }
+    section:nth-of-type(3) { animation-delay: 0.5s; }
+    section:nth-of-type(4) { animation-delay: 0.59s; }
+    section:nth-of-type(5) { animation-delay: 0.68s; }
+    section:nth-of-type(6) { animation-delay: 0.77s; }
+
+    @keyframes riseIn {
+      from { opacity: 0; transform: translateY(3mm); }
+    }
+
+    /* intitulé de poste : dégradé qui balaie le texte */
+    .headline {
+      background-image: linear-gradient(
+        100deg,
+        var(--accent) 0%,
+        #fdba74 38%,
+        var(--accent) 72%
+      );
+      background-size: 240% 100%;
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      animation: shimmer 7s linear infinite;
+    }
+
+    @keyframes shimmer {
+      to { background-position: 240% 0; }
+    }
+
+    /* pastille de disponibilité qui respire */
+    .availability::before {
+      content: '';
+      display: inline-block;
+      width: 1.7mm;
+      height: 1.7mm;
+      margin-right: 1.3mm;
+      border-radius: 50%;
+      background: #16a34a;
+      animation: pulseDot 2.4s ease-in-out infinite;
+    }
+
+    @keyframes pulseDot {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(22, 163, 74, 0.55); }
+      55% { box-shadow: 0 0 0 1.4mm rgba(22, 163, 74, 0); }
+    }
+
+    /* titres de section : le filet se trace au chargement */
+    h2 {
+      border-bottom-color: transparent;
+      background-image: linear-gradient(90deg, var(--accent), var(--accent-2));
+      background-repeat: no-repeat;
+      background-position: left bottom;
+      background-size: 0 0.55mm;
+      animation: drawLine 0.8s var(--ease) 0.6s both;
+      transition: color 0.35s var(--ease);
+    }
+
+    @keyframes drawLine {
+      to { background-size: 100% 0.55mm; }
+    }
+
+    section:hover h2 { color: var(--accent); }
+
+    /*
+      Zones survolables : le décalage horizontal négatif compense exactement
+      bordure + padding, donc le texte ne bouge pas d'un pixel.
+      Les marges verticales entre frères passent à 0, le padding reprend l'écart.
+    */
+    .job,
+    .skill,
+    .row,
+    .inline {
+      border-left: 0.7mm solid transparent;
+      border-radius: 0 1.5mm 1.5mm 0;
+      margin-left: -2.9mm;
+      margin-right: -2.2mm;
+      padding-left: 2.2mm;
+      padding-right: 2.2mm;
+      transition:
+        background-color 0.35s var(--ease),
+        border-left-color 0.35s var(--ease),
+        transform 0.35s var(--ease);
+    }
+
+    .job { padding-top: 1.1mm; padding-bottom: 1.1mm; }
+    .skill,
+    .row,
+    .inline { padding-top: 0.5mm; padding-bottom: 0.5mm; }
+
+    .job + .job,
+    .skill + .skill,
+    .row + .row,
+    .inline + .inline { margin-top: 0; }
+
+    /* en tête et en pied de groupe, ce padding n'a rien à compenser :
+       on le reprend en marge négative pour rester à la hauteur d'une A4 */
+    .job:first-of-type { margin-top: -1.1mm; }
+    .job:last-of-type { margin-bottom: -1.1mm; }
+
+    .skill:first-of-type,
+    .row:first-of-type,
+    .inline:first-of-type { margin-top: -0.5mm; }
+
+    .skill:last-of-type,
+    .row:last-of-type,
+    .inline:last-of-type { margin-bottom: -0.5mm; }
+
+    .job:hover,
+    .skill:hover,
+    .row:hover,
+    .inline:hover {
+      background-color: rgba(234, 88, 12, 0.055);
+      border-left-color: var(--accent);
+      transform: translateX(1mm);
+    }
+
+    .job-title,
+    .job-date,
+    .row .when { transition: color 0.3s var(--ease); }
+
+    .job:hover .job-title { color: var(--accent); }
+    .job:hover .job-date,
+    .row:hover .when { color: var(--ink-2); }
+    .skill:hover b { color: var(--accent); }
+    .skill b { transition: color 0.3s var(--ease); }
+
+    /* puces : la ligne survolée avance légèrement */
+    li {
+      border-radius: 1mm;
+      transition:
+        color 0.3s var(--ease),
+        transform 0.3s var(--ease);
+    }
+
+    li:hover {
+      color: var(--ink-2);
+      transform: translateX(0.9mm);
+    }
+  }
+
+  /* accessibilité : on garde la mise en page, on retire le mouvement */
+  @media screen and (prefers-reduced-motion: reduce) {
+    html,
+    .page,
+    header,
+    section,
+    h2,
+    .headline,
+    .availability::before { animation: none !important; }
+
+    * { transition-duration: 0.01ms !important; }
+
+    .page { background-image: none; }
+
+    h2 {
+      border-bottom-color: var(--accent);
+      background-image: none;
+    }
+
+    .headline {
+      background-image: none;
+      -webkit-background-clip: border-box;
+      background-clip: border-box;
+      color: var(--accent);
+    }
+  }
+
+  @page { size: A4; margin: 0; }
+
+  @media print {
+    html, body { background: #fff; }
+    body { padding: 0; }
+    .page { box-shadow: none; }
+  }
+
+  * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+</style>
+</head>
+<body>
+
+<article class="page">
+
+  <header>
+    <h1 class="name">ASHLER DELEKE</h1>
+    <p class="headline">UX/UI Designer &amp; Product Designer — Alternance</p>
+    <p class="contact">
+      Île-de-France (mobile) · +33 7 58 16 90 88 · delekeashler@gmail.com<br />
+      Portfolio : ashler18.github.io/mon-portfolio · LinkedIn : linkedin.com/in/ashler · GitHub : github.com/ashler18
+    </p>
+    <p class="availability">
+      Disponible immédiatement · Rythme recherché : 3 semaines en entreprise / 1 semaine en formation
+    </p>
+  </header>
+
+  <section>
+    <h2>Profil</h2>
+    <p class="summary">
+      Étudiante en MBA Design UI/UX, je conçois des produits numériques centrés utilisateur et j'interviens
+      sur tout le cycle : recherche utilisateur, architecture de l'information, maquettes et prototypes
+      interactifs, Design System, puis intégration front-end en React. Ma formation en réseaux
+      informatiques m'apporte une vraie aisance technique.
+    </p>
+  </section>
+
+  <section>
+    <h2>Compétences</h2>
+    <p class="skill"><b>UX Research :</b> recherche utilisateur, analyse des besoins, benchmark concurrentiel, personas, empathy map, customer journey map, user flow, architecture de l'information, tests utilisateurs</p>
+    <p class="skill"><b>UI &amp; Product Design :</b> wireframes basse et haute fidélité, prototypage interactif, Design System, Atomic Design, responsive design, accessibilité RGAA, priorisation des fonctionnalités</p>
+    <p class="skill"><b>Développement Front-End :</b> HTML5, CSS3, JavaScript, TypeScript, React, Tailwind CSS, Git, GitHub, WordPress, SQL</p>
+    <p class="skill"><b>Support applicatif</b> (auto-formation en cours) <b>:</b> assistance utilisateurs N1 et N2, qualification et suivi des incidents, gestion des tickets Jira et ServiceNow, recette applicative</p>
+    <p class="skill"><b>Logiciels et outils :</b> Figma, FigJam, Miro, Jira, VS Code, Photoshop, Illustrator, InDesign, Canva Pro, Premiere Pro</p>
+  </section>
+
+  <section>
+    <h2>Expérience professionnelle et projets</h2>
+
+    <div class="job">
+      <div class="job-line">
+        <p class="job-title">UX/UI Designer &amp; Intégratrice Front-End — Kredy</p>
+        <p class="job-date">2025</p>
+      </div>
+      <p class="job-meta">Plateforme fintech de micro-financement (Bénin) · Projet de soutenance, en binôme</p>
+      <ul>
+        <li>Recherche utilisateur et <b>2 personas</b> : commerçante non bancarisée, gestionnaire de portefeuille.</li>
+        <li><b>3 interfaces</b> conçues — dashboard B2B, app mobile, landing : wireframes, maquettes HD, prototypes Figma.</li>
+        <li>Design System partagé entre les 3 surfaces ; front-end React et démo déployée en ligne.</li>
+      </ul>
+    </div>
+
+    <div class="job">
+      <div class="job-line">
+        <p class="job-title">UI Designer &amp; Intégratrice Front-End — S.A.S WIVE</p>
+        <p class="job-date">Avril 2025 – Juin 2025</p>
+      </div>
+      <p class="job-meta">Stage · Lyon</p>
+      <ul>
+        <li>Refonte du site vitrine à partir d'un template, en React et Tailwind CSS.</li>
+        <li>Bibliothèque de composants réutilisables, versioning Git, reprise des points d'accessibilité.</li>
+        <li><b>Livraison validée par le client</b> en fin de mission.</li>
+      </ul>
+    </div>
+
+    <div class="job">
+      <div class="job-line">
+        <p class="job-title">UX/UI Designer — FunkyFlip</p>
+        <p class="job-date">Oct. 2025 – 2026</p>
+      </div>
+      <p class="job-meta">Application mobile de bien-être mental · Projet personnel mené en autonomie</p>
+      <ul>
+        <li>UX/UI complète en solo : recherche utilisateur, <b>2 personas</b>, arborescence, wireframes.</li>
+        <li>Maquettes haute fidélité et prototype interactif sur Figma.</li>
+        <li><b>5 tests utilisateurs</b> réels : frictions de navigation identifiées, puis corrigées en refonte 2026.</li>
+      </ul>
+    </div>
+
+    <div class="job">
+      <div class="job-line">
+        <p class="job-title">Développeuse Front-End — Projets web</p>
+        <p class="job-date">Janv. 2024 – Sept. 2025</p>
+      </div>
+      <p class="job-meta">Missions et projets réalisés à distance</p>
+      <ul>
+        <li><b>WECOW</b> : site vitrine React d'une ONG environnementale, conçu et développé (benin-wecow.org).</li>
+        <li><b>Citations Inspirantes</b> : site conforme <b>RGAA niveau AA</b>, tests de conformité et navigation clavier.</li>
+        <li><b>To-Do List React</b> : gestion de tâches avec les hooks useState et useEffect.</li>
+      </ul>
+    </div>
+
+    <div class="job">
+      <div class="job-line">
+        <p class="job-title">Fondatrice &amp; Designer de marque — Art-shler (marque textile personnelle)</p>
+        <p class="job-date">Depuis 2026</p>
+      </div>
+      <ul>
+        <li>Identité visuelle complète (logo, charte, design textile) et <b>5 collections</b> menées de la conception à la vente.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section>
+    <h2>Formation</h2>
+    <div class="row">
+      <p class="what"><b>MBA Design UI/UX</b> — MyDigitalSchool (en cours)</p>
+      <p class="when">2026 – 2027</p>
+    </div>
+    <div class="row">
+      <p class="what"><b>Bachelor Développement Web</b> — IPI Lyon</p>
+      <p class="when">2024 – 2025</p>
+    </div>
+    <div class="row">
+      <p class="what"><b>Licence Réseaux Informatiques et Télécommunications</b> — HECM, Bénin</p>
+      <p class="when">2021 – 2024</p>
+    </div>
+  </section>
+
+  <section>
+    <h2>Certifications</h2>
+    <div class="row">
+      <p class="what"><b>Accessibilité Web (RGAA)</b> et <b>Web Accessibility Basics</b> — Contentsquare</p>
+      <p class="when">2025</p>
+    </div>
+  </section>
+
+  <section>
+    <h2>Langues et centres d'intérêt</h2>
+    <p class="inline"><b>Français :</b> langue maternelle · <b>Anglais :</b> niveau B1</p>
+    <p class="inline">Écriture · Jeux vidéo · Musique · Astronomie · Voyage</p>
+  </section>
+
+</article>
+
+</body>
+</html>

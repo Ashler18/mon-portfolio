@@ -11,6 +11,12 @@
 # production
 /build
 
+# captures d'ecran intermediaires servant a composer les visuels
+/.shots
+
+# racine locale servant a previsualiser le build sur son sous-chemin
+/.preview
+
 # misc
 .DS_Store
 .env.local
