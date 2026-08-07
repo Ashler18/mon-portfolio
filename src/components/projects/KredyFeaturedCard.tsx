@@ -29,7 +29,7 @@ export function KredyFeaturedCard({ project, onOpenLightbox }: KredyFeaturedCard
     () =>
       phones.map((phone) => ({
         src: phone.image,
-        alt: `${project.title} — ${phone.label}`,
+        alt: `${project.title} - ${phone.label}`,
         label: phone.label,
       })),
     [phones, project.title]
@@ -112,7 +112,7 @@ export function KredyFeaturedCard({ project, onOpenLightbox }: KredyFeaturedCard
                 >
                   <LazyImage
                     src={dashboard.image}
-                    alt={`${project.title} — ${dashboard.label}`}
+                    alt={`${project.title} - ${dashboard.label}`}
                     className="w-full h-full object-cover object-top"
                   />
                   <span className="surface-label">{dashboard.label}</span>
@@ -128,7 +128,7 @@ export function KredyFeaturedCard({ project, onOpenLightbox }: KredyFeaturedCard
                 >
                   <LazyImage
                     src={landing.image}
-                    alt={`${project.title} — ${landing.label}`}
+                    alt={`${project.title} - ${landing.label}`}
                     className="w-full h-full object-cover object-top"
                   />
                   <span className="surface-label">{landing.label}</span>

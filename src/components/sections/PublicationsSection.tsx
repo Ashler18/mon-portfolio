@@ -23,7 +23,7 @@ export function PublicationsSection({ sectionRef }: PublicationsSectionProps) {
           </h3>
           <p className="text-base sm:text-lg text-gray-600 mb-6 sm:mb-8 leading-relaxed">
             J&apos;ai publié un essai disponible sur Amazon. L&apos;écriture m&apos;aide à
-            explorer d&apos;autres univers et à partager mes réflexions — un complément
+            explorer d&apos;autres univers et à partager mes réflexions - un complément
             naturel à mon travail de designer.
           </p>
           <a

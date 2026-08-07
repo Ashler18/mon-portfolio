@@ -16,14 +16,14 @@ export const projectsUX: UxProject[] = [
     category: 'Projet phare',
     featured: true,
     summary:
-      "Kredy est une plateforme de micro-financement pour commerçants, artisans et indépendants exclus du crédit bancaire. J'ai conçu l'expérience de bout en bout — mobile, dashboard et landing — puis collaboré à l'intégration front-end pour que le design tienne réellement à l'écran.",
+      "Kredy est une plateforme de micro-financement pour commerçants, artisans et indépendants exclus du crédit bancaire. J'ai conçu l'expérience de bout en bout - mobile, dashboard et landing - puis collaboré à l'intégration front-end pour que le design tienne réellement à l'écran.",
     caseStudy: {
       challenge:
         'Rendre le crédit accessible sans historique bancaire, avec un parcours simple, rassurant, et assez précis pour guider le développement.',
       method:
         "J'ai commencé par comprendre les freins au crédit, puis j'ai structuré les parcours (mobile et institution), prototyé les écrans clés et posé un Design System avant d'accompagner l'intégration React.",
       result:
-        "Trois interfaces cohérentes, un Design System partagé, et une démo front-end live qui matérialise les décisions UX — scoring alternatif, biométrie et confiance intégrés dans l'expérience.",
+        "Trois interfaces cohérentes, un Design System partagé, et une démo front-end live qui matérialise les décisions UX - scoring alternatif, biométrie et confiance intégrés dans l'expérience.",
     },
     links: {
       demo: 'https://ashler18.github.io/kredy/',
@@ -57,9 +57,9 @@ export const projectsUX: UxProject[] = [
       "Refonte d’une application de bien-être mental qui propose des micro-histoires drôles à lire en deux minutes.",
     caseStudy: {
       challenge:
-        "L’application tenait sa promesse — des histoires absurdes, satiriques ou pleines de jeux de mots — mais l’interface la desservait : des écrans étirés sur toute la hauteur, une barre de navigation surdimensionnée et des blocs très espacés qui obligeaient à faire défiler avant de comprendre ce que l’on pouvait y faire.",
+        "L’application tenait sa promesse - des histoires absurdes, satiriques ou pleines de jeux de mots - mais l’interface la desservait : des écrans étirés sur toute la hauteur, une barre de navigation surdimensionnée et des blocs très espacés qui obligeaient à faire défiler avant de comprendre ce que l’on pouvait y faire.",
       method:
-        "J’ai réorganisé le parcours autour de quatre entrées lisibles — Accueil, Explorer, Bien-être et Profil — puis resserré le rythme vertical de tous les écrans : barre de navigation ramenée de 88 à 64 px avec des icônes agrandies, marges et espacements réduits, contenu aligné en haut plutôt que réparti sur la hauteur. La navigation est devenue un composant unique, réutilisé sur les dix-huit écrans pour garantir la cohérence.",
+        "J’ai réorganisé le parcours autour de quatre entrées lisibles - Accueil, Explorer, Bien-être et Profil - puis resserré le rythme vertical de tous les écrans : barre de navigation ramenée de 88 à 64 px avec des icônes agrandies, marges et espacements réduits, contenu aligné en haut plutôt que réparti sur la hauteur. La navigation est devenue un composant unique, réutilisé sur les dix-huit écrans pour garantir la cohérence.",
       result:
         "Un parcours de dix-huit écrans maquettés et prototypés, où l’accueil met immédiatement une histoire à portée de lecture. L’ensemble est manipulable en interaction dans le prototype Figma.",
     },
@@ -110,7 +110,7 @@ export const projects: DevProject[] = [
   },
   {
     title: 'S.A.S WIVE-Lyon',
-    period: 'Stage · Avril – Juin 2025',
+    period: 'Stage · Avril - Juin 2025',
     summary:
       "Pendant deux mois, j'ai travaillé sur le site vitrine de WIVE : améliorer l'ergonomie, renforcer l'accessibilité et intégrer des composants React au plus près des besoins client.",
     caseStudy: {

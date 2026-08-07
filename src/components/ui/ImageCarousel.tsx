@@ -33,7 +33,7 @@ export function ImageCarousel({ slides, onOpenLightbox, className = '' }: ImageC
     if (!el) return;
     const child = el.children[index] as HTMLElement | undefined;
     if (!child) return;
-    // Scroll uniquement le track du carrousel — jamais les ancêtres
+    // Scroll uniquement le track du carrousel - jamais les ancêtres
     // (sinon overflow:hidden sur la carte parent décale tout le texte).
     const left = child.offsetLeft - (el.clientWidth - child.offsetWidth) / 2;
     el.scrollTo({ left: Math.max(0, left), behavior: 'smooth' });

@@ -12,7 +12,7 @@ interface UxCaseStudyCardProps {
 export function UxCaseStudyCard({ project, onOpenLightbox }: UxCaseStudyCardProps) {
   const slides = (project.phones ?? []).map((phone) => ({
     src: phone.image,
-    alt: `${project.title} — ${phone.label}`,
+    alt: `${project.title} - ${phone.label}`,
     label: phone.label,
   }));
 

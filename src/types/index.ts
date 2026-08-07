@@ -44,7 +44,7 @@ export interface CreativeWork {
 
 export interface CaseStudy {
   challenge: string;
-  /** Short narrative of the process — no tag lists */
+  /** Short narrative of the process - no tag lists */
   method?: string;
   result: string;
 }

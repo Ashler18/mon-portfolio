@@ -11,7 +11,7 @@ export function ComingSoonCard({ project }: ComingSoonCardProps) {
   return (
     <article
       className="coming-soon-card group"
-      aria-label={`${project.title} — étude de cas en préparation`}
+      aria-label={`${project.title} - étude de cas en préparation`}
     >
       <div className="flex items-start justify-between gap-3 mb-4">
         <div>

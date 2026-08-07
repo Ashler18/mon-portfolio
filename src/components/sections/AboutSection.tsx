@@ -25,7 +25,7 @@ export function AboutSection({ sectionRef }: AboutSectionProps) {
           </p>
           <p className="text-base sm:text-lg text-gray-600 leading-relaxed">
             Formée d&apos;abord aux réseaux informatiques, j&apos;ai ensuite choisi le design
-            UX/UI — tout en gardant une vraie aisance côté front-end. Cette double lecture
+            UX/UI - tout en gardant une vraie aisance côté front-end. Cette double lecture
             m&apos;aide à proposer des expériences à la fois belles, accessibles et réalistes
             à produire.
           </p>
@@ -49,19 +49,19 @@ export function AboutSection({ sectionRef }: AboutSectionProps) {
                 <p className="font-bold text-gray-900 mb-0.5 text-[15px]">
                   MBA Design UI/UX (en cours)
                 </p>
-                <p className="text-sm text-gray-500">My Digital School — 2026/2027</p>
+                <p className="text-sm text-gray-500">My Digital School - 2026/2027</p>
               </div>
               <div className="border-l-2 border-gray-200 pl-3">
                 <p className="font-bold text-gray-900 mb-0.5 text-[15px]">
                   Bachelor Développeur d&apos;Application
                 </p>
-                <p className="text-sm text-gray-500">IPI-Lyon — 2024/2025</p>
+                <p className="text-sm text-gray-500">IPI-Lyon - 2024/2025</p>
               </div>
               <div className="border-l-2 border-gray-200 pl-3">
                 <p className="font-bold text-gray-900 mb-0.5 text-[15px]">
                   Licence Réseaux Informatiques
                 </p>
-                <p className="text-sm text-gray-500">HECM Bénin — 2021/2024</p>
+                <p className="text-sm text-gray-500">HECM Bénin - 2021/2024</p>
               </div>
             </div>
           </div>
@@ -78,13 +78,13 @@ export function AboutSection({ sectionRef }: AboutSectionProps) {
                 <p className="font-bold text-gray-900 mb-0.5 text-[15px]">
                   Web Accessibility Basics
                 </p>
-                <p className="text-sm text-gray-500">Contentsquare — 2025</p>
+                <p className="text-sm text-gray-500">Contentsquare - 2025</p>
               </div>
               <div className="border-l-2 border-orange-200 pl-3">
                 <p className="font-bold text-gray-900 mb-0.5 text-[15px]">
                   Accessibilité Web RGAA
                 </p>
-                <p className="text-sm text-gray-500">Contentsquare — 2025</p>
+                <p className="text-sm text-gray-500">Contentsquare - 2025</p>
               </div>
             </div>
           </div>

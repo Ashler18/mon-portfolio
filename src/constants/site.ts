@@ -6,7 +6,7 @@ export const SITE = {
   github: 'https://github.com/ashler18',
   linkedin: 'https://www.linkedin.com/in/ashler/',
   homepage: 'https://ashler18.github.io/mon-portfolio',
-  title: 'Ashler DELEKE — UX/UI Designer & Product Designer',
+  title: 'Ashler DELEKE - UX/UI Designer & Product Designer',
   description:
     "Portfolio d'Ashler DELEKE, UX/UI Designer & Product Designer. Recherche utilisateur, architecture de l'information, maquettes et prototypes interactifs, Design System et intégration front-end en React.",
   availability: 'Disponible en alternance 2026',
