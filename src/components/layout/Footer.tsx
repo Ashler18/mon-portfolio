@@ -12,7 +12,7 @@ export function Footer() {
         © {year} {SITE.name}
       </p>
       <p className="text-slate-400 text-xs tracking-wide">
-        UX/UI Designer &amp; Product Designer · Front-end
+        Alternance en UX/UI Designer &amp; Product Designer · Front-end
       </p>
     </footer>
   );

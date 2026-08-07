@@ -1,14 +1,14 @@
 export const SITE = {
   name: 'Ashler DELEKE',
-  role: 'UX/UI Designer & Product Designer',
-  shortRole: 'UX/UI & Product Designer',
+  role: 'Alternance en UX/UI Designer & Product Designer',
+  shortRole: 'En alternance UX/UI',
   email: 'delekeashler@gmail.com',
   github: 'https://github.com/ashler18',
   linkedin: 'https://www.linkedin.com/in/ashler/',
   homepage: 'https://ashler18.github.io/mon-portfolio',
-  title: 'Ashler DELEKE - UX/UI Designer & Product Designer',
+  title: 'Ashler DELEKE - Alternance en UX/UI Designer & Product Designer',
   description:
-    "Portfolio d'Ashler DELEKE, UX/UI Designer & Product Designer. Recherche utilisateur, architecture de l'information, maquettes et prototypes interactifs, Design System et intégration front-end en React.",
+    "Portfolio d'Ashler DELEKE, Alternance en UX/UI Designer & Product Designer. Recherche utilisateur, architecture de l'information, maquettes et prototypes interactifs, Design System et intégration front-end en React.",
   availability: 'Disponible en alternance 2026',
   cvFile: '/CV_Ashler_Deleke.pdf',
   cvPage: '/cv/',

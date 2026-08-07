@@ -19,7 +19,7 @@ export function AboutSection({ sectionRef }: AboutSectionProps) {
 
         <div className="max-w-3xl space-y-4 sm:space-y-5">
           <p className="text-base sm:text-lg text-gray-600 leading-relaxed">
-            Je suis UX/UI Designer &amp; Product Designer. Mon fil rouge : comprendre les
+            Je suis Alternance en UX/UI Designer &amp; Product Designer. Mon fil rouge : comprendre les
             besoins, concevoir des interfaces claires, puis collaborer jusqu&apos;à la
             transmission au développement.
           </p>
