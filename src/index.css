@@ -360,8 +360,11 @@
   }
 
   .kredy-card {
-    @apply relative overflow-hidden rounded-2xl sm:rounded-3xl
+    @apply relative rounded-2xl sm:rounded-3xl
       border border-slate-200/80 bg-white p-5 sm:p-6 lg:p-7;
+    /* clip (pas hidden) : coupe le halo sans créer de zone scrollable
+       que le carrousel pourrait décaler via scrollIntoView */
+    overflow: clip;
     box-shadow: 0 4px 24px rgba(15, 23, 42, 0.05);
     transition: box-shadow 0.4s var(--ease-out), border-color 0.3s ease;
   }
