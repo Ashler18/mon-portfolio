@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react';
 import { ExternalLink, Github } from 'lucide-react';
 import type { UxProject } from '../../types';
+import { CaseStudyBlocks } from '../ui/CaseStudyBlocks';
 import { LazyImage } from '../ui/LazyImage';
 import { ImageCarousel } from '../ui/ImageCarousel';
 
@@ -10,17 +11,9 @@ interface KredyFeaturedCardProps {
 }
 
 type SurfaceTab = 'dashboard' | 'mobile' | 'landing';
-type CaseTab = 'challenge' | 'method' | 'result';
-
-const CASE_TABS: { key: CaseTab; label: string }[] = [
-  { key: 'challenge', label: 'Le défi' },
-  { key: 'method', label: 'La démarche' },
-  { key: 'result', label: 'Le résultat' },
-];
 
 export function KredyFeaturedCard({ project, onOpenLightbox }: KredyFeaturedCardProps) {
   const [surface, setSurface] = useState<SurfaceTab>('mobile');
-  const [caseTab, setCaseTab] = useState<CaseTab>('challenge');
 
   const surfaces = project.surfaces ?? [];
   const phones = project.phones ?? [];
@@ -42,39 +35,19 @@ export function KredyFeaturedCard({ project, onOpenLightbox }: KredyFeaturedCard
     [phones, project.title]
   );
 
-  const caseText = project.caseStudy[caseTab];
-
   return (
     <article className="kredy-card group">
       <div className="kredy-card__glow" aria-hidden="true" />
 
-      <div className="grid lg:grid-cols-12 gap-5 lg:gap-7 items-stretch">
+      <div className="grid lg:grid-cols-12 gap-5 lg:gap-7 items-start">
         <div className="lg:col-span-5 flex flex-col relative z-[1]">
           <p className="kredy-card__eyebrow">{project.period}</p>
           <h3 className="kredy-card__title">{project.title}</h3>
           <p className="kredy-card__summary">{project.summary}</p>
 
-          <div className="kredy-case" role="tablist" aria-label="Étude de cas Kredy">
-            <div className="kredy-case__tabs">
-              {CASE_TABS.map((tab) => (
-                <button
-                  key={tab.key}
-                  type="button"
-                  role="tab"
-                  aria-selected={caseTab === tab.key}
-                  className={`kredy-case__tab${caseTab === tab.key ? ' is-active' : ''}`}
-                  onClick={() => setCaseTab(tab.key)}
-                >
-                  {tab.label}
-                </button>
-              ))}
-            </div>
-            <div className="kredy-case__panel" key={caseTab} role="tabpanel">
-              <p>{caseText}</p>
-            </div>
-          </div>
+          <CaseStudyBlocks caseStudy={project.caseStudy} />
 
-          <div className="flex flex-wrap gap-2.5 mt-auto pt-5">
+          <div className="flex flex-wrap gap-2.5 mt-6">
             {project.links.demo && (
               <a
                 href={project.links.demo}
@@ -94,7 +67,7 @@ export function KredyFeaturedCard({ project, onOpenLightbox }: KredyFeaturedCard
                 className="btn-secondary"
               >
                 <Github className="w-4 h-4" strokeWidth={1.75} />
-                GitHub
+                Voir le dépôt GitHub
               </a>
             )}
           </div>
