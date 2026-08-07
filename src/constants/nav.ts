@@ -24,6 +24,5 @@ export const SECTION_ORDER: SectionId[] = [
 export const PROJECT_FILTERS: ProjectFilter[] = [
   'Tout',
   'UX/UI',
-  'Graphisme',
   'Développement',
 ];

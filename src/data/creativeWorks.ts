@@ -55,11 +55,11 @@ export const creativeWorks: CreativeWork[] = [
   },
   {
     type: 'print',
-    title: 'Soldes Mode - MH',
+    title: 'Solve Mode - MH',
     image: asset('/images/flyers/soldes-flyer-1.png'),
     category: 'Design Print',
     description:
-      "Visuels promotionnels que j'ai créés pour les soldes de la boutique MH. Design minimaliste chic mettant en valeur les produits mode avec appel à l'action WhatsApp.",
+      "Visuels promotionnels que j'ai créés pour Solve, la boutique MH. Design minimaliste chic mettant en valeur les produits mode avec appel à l'action WhatsApp.",
     gallery: [
       asset('/images/flyers/soldes-flyer-1.png'),
       asset('/images/flyers/soldes-flyer-2.png'),

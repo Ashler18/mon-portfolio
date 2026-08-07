@@ -31,15 +31,21 @@ export const projectsUX: UxProject[] = [
     },
     surfaces: [
       { label: 'Dashboard', image: asset('/images/kredy/dashboard.png') },
-      { label: 'Application mobile', image: asset('/images/kredy/mobile.png') },
       { label: 'Landing page', image: asset('/images/kredy/landing.png') },
+    ],
+    phones: [
+      { label: 'Accueil', image: asset('/images/kredy/phone-accueil.png') },
+      { label: 'Demande de crédit', image: asset('/images/kredy/phone-demande.png') },
+      { label: 'Crédit accordé', image: asset('/images/kredy/phone-accorde.png') },
     ],
     preview: asset('/images/kredy/dashboard.png'),
     gallery: [
       asset('/images/kredy/dashboard.png'),
       asset('/images/kredy/dossiers.png'),
       asset('/images/kredy/rapports.png'),
-      asset('/images/kredy/mobile.png'),
+      asset('/images/kredy/phone-accueil.png'),
+      asset('/images/kredy/phone-demande.png'),
+      asset('/images/kredy/phone-accorde.png'),
       asset('/images/kredy/landing.png'),
     ],
   },
@@ -60,13 +66,16 @@ export const projectsUX: UxProject[] = [
     links: {
       figma: FUNKYFLIP_PROTOTYPE,
     },
-    preview: asset('/images/funkyflip/mockup.png'),
+    phones: [
+      { label: 'Explorer', image: asset('/images/funkyflip/phone-explorer.png') },
+      { label: 'Accueil', image: asset('/images/funkyflip/phone-accueil.png') },
+      { label: 'Bien-être', image: asset('/images/funkyflip/phone-bienetre.png') },
+    ],
+    preview: asset('/images/funkyflip/phone-accueil.png'),
     gallery: [
-      asset('/images/funkyflip/mockup.png'),
-      asset('/images/funkyflip-accueil.png'),
-      asset('/images/funkyflip-explorer.png'),
-      asset('/images/funkyflip-bienetre.png'),
-      asset('/images/funkyflip-profil.png'),
+      asset('/images/funkyflip/phone-explorer.png'),
+      asset('/images/funkyflip/phone-accueil.png'),
+      asset('/images/funkyflip/phone-bienetre.png'),
     ],
   },
 ];
@@ -94,7 +103,9 @@ export const projects: DevProject[] = [
       asset('/images/kredy/landing.png'),
       asset('/images/kredy/dashboard.png'),
       asset('/images/kredy/dossiers.png'),
-      asset('/images/kredy/mobile.png'),
+      asset('/images/kredy/phone-accueil.png'),
+      asset('/images/kredy/phone-demande.png'),
+      asset('/images/kredy/phone-accorde.png'),
     ],
   },
   {
@@ -113,9 +124,16 @@ export const projects: DevProject[] = [
     links: {
       demo: 'https://wive.fr',
     },
-    preview: asset('/images/projet-wive-1.png'),
+    // La capture pleine page a ete redecoupee section par section : on parcourt
+    // le site comme une suite d'ecrans lisibles plutot qu'un seul visuel etire.
+    preview: asset('/images/wive/section-1.png'),
     gallery: [
-      asset('/images/projet-wive-1.png'),
+      asset('/images/wive/section-1.png'),
+      asset('/images/wive/section-2.png'),
+      asset('/images/wive/section-3.png'),
+      asset('/images/wive/section-4.png'),
+      asset('/images/wive/section-5.png'),
+      asset('/images/wive/section-6.png'),
       asset('/images/projet-wive-2.png'),
     ],
   },

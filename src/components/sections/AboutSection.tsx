@@ -1,5 +1,5 @@
 import type { RefObject } from 'react';
-import { Award, Sparkles, Star } from 'lucide-react';
+import { Award, BadgeCheck, UserRound } from 'lucide-react';
 import { SectionHeader } from '../layout/SectionHeader';
 
 interface AboutSectionProps {
@@ -13,7 +13,7 @@ export function AboutSection({ sectionRef }: AboutSectionProps) {
         <SectionHeader
           id="about-title"
           title="À propos"
-          icon={<Star className="w-6 h-6 sm:w-7 sm:h-7" strokeWidth={1.75} />}
+          icon={<UserRound className="w-6 h-6 sm:w-7 sm:h-7" strokeWidth={1.75} />}
           className="!mb-6 sm:!mb-8"
         />
 
@@ -69,7 +69,7 @@ export function AboutSection({ sectionRef }: AboutSectionProps) {
           <div className="bg-slate-50/90 rounded-2xl p-5 sm:p-6 lg:p-7 border border-gray-100 hover:border-orange-100 hover:shadow-md transition-all duration-300">
             <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-5 flex items-center gap-2.5">
               <div className="p-2 bg-orange-50 rounded-lg">
-                <Sparkles className="w-5 h-5 text-orange-600" strokeWidth={1.75} />
+                <BadgeCheck className="w-5 h-5 text-orange-600" strokeWidth={1.75} />
               </div>
               Certifications
             </h3>

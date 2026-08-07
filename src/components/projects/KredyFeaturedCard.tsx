@@ -1,39 +1,80 @@
+import { useMemo, useState } from 'react';
 import { ExternalLink, Github } from 'lucide-react';
 import type { UxProject } from '../../types';
 import { LazyImage } from '../ui/LazyImage';
-import { CaseStudyBlocks } from '../ui/CaseStudyBlocks';
+import { ImageCarousel } from '../ui/ImageCarousel';
 
 interface KredyFeaturedCardProps {
   project: UxProject;
   onOpenLightbox: (image: string, gallery?: string[]) => void;
 }
 
+type SurfaceTab = 'dashboard' | 'mobile' | 'landing';
+type CaseTab = 'challenge' | 'method' | 'result';
+
+const CASE_TABS: { key: CaseTab; label: string }[] = [
+  { key: 'challenge', label: 'Le défi' },
+  { key: 'method', label: 'La démarche' },
+  { key: 'result', label: 'Le résultat' },
+];
+
 export function KredyFeaturedCard({ project, onOpenLightbox }: KredyFeaturedCardProps) {
+  const [surface, setSurface] = useState<SurfaceTab>('mobile');
+  const [caseTab, setCaseTab] = useState<CaseTab>('challenge');
+
   const surfaces = project.surfaces ?? [];
-  const gallery = project.gallery ?? surfaces.map((s) => s.image);
-  const [dashboard, mobile, landing] = surfaces;
+  const phones = project.phones ?? [];
+  const gallery = project.gallery ?? [
+    ...surfaces.map((s) => s.image),
+    ...phones.map((p) => p.image),
+  ];
+
+  const dashboard = surfaces.find((s) => s.label === 'Dashboard') ?? surfaces[0];
+  const landing = surfaces.find((s) => s.label === 'Landing page') ?? surfaces[1];
+
+  const phoneSlides = useMemo(
+    () =>
+      phones.map((phone) => ({
+        src: phone.image,
+        alt: `${project.title} — ${phone.label}`,
+        label: phone.label,
+      })),
+    [phones, project.title]
+  );
+
+  const caseText = project.caseStudy[caseTab];
 
   return (
-    <article className="featured-card group">
-      <div className="flex flex-wrap items-center gap-2 mb-4">
-        <span className="badge-featured">Projet phare</span>
-      </div>
+    <article className="kredy-card group">
+      <div className="kredy-card__glow" aria-hidden="true" />
 
-      <div className="grid lg:grid-cols-12 gap-6 lg:gap-8 items-start">
-        <div className="lg:col-span-5 flex flex-col">
-          <h3 className="text-2xl sm:text-3xl font-bold text-gray-900 tracking-tight mb-2">
-            {project.title}
-          </h3>
-          <p className="text-orange-600 font-semibold text-xs sm:text-sm mb-4">
-            {project.period}
-          </p>
-          <p className="text-gray-600 text-sm sm:text-[15px] leading-relaxed mb-5">
-            {project.summary}
-          </p>
+      <div className="grid lg:grid-cols-12 gap-5 lg:gap-7 items-stretch">
+        <div className="lg:col-span-5 flex flex-col relative z-[1]">
+          <p className="kredy-card__eyebrow">{project.period}</p>
+          <h3 className="kredy-card__title">{project.title}</h3>
+          <p className="kredy-card__summary">{project.summary}</p>
 
-          <CaseStudyBlocks caseStudy={project.caseStudy} />
+          <div className="kredy-case" role="tablist" aria-label="Étude de cas Kredy">
+            <div className="kredy-case__tabs">
+              {CASE_TABS.map((tab) => (
+                <button
+                  key={tab.key}
+                  type="button"
+                  role="tab"
+                  aria-selected={caseTab === tab.key}
+                  className={`kredy-case__tab${caseTab === tab.key ? ' is-active' : ''}`}
+                  onClick={() => setCaseTab(tab.key)}
+                >
+                  {tab.label}
+                </button>
+              ))}
+            </div>
+            <div className="kredy-case__panel" key={caseTab} role="tabpanel">
+              <p>{caseText}</p>
+            </div>
+          </div>
 
-          <div className="flex flex-wrap gap-2.5 mt-6">
+          <div className="flex flex-wrap gap-2.5 mt-auto pt-5">
             {project.links.demo && (
               <a
                 href={project.links.demo}
@@ -53,49 +94,62 @@ export function KredyFeaturedCard({ project, onOpenLightbox }: KredyFeaturedCard
                 className="btn-secondary"
               >
                 <Github className="w-4 h-4" strokeWidth={1.75} />
-                Voir le dépôt GitHub
+                GitHub
               </a>
             )}
           </div>
         </div>
 
-        <div className="lg:col-span-7">
-          <div className="kredy-mosaic">
-            {dashboard && (
-              <button
-                type="button"
-                className="kredy-mosaic__main media-zoom"
-                onClick={() => onOpenLightbox(dashboard.image, gallery)}
-                aria-label={`Agrandir ${dashboard.label}`}
-              >
-                <LazyImage
-                  src={dashboard.image}
-                  alt={`${project.title} — ${dashboard.label}`}
-                  className="w-full h-full object-cover object-top"
-                />
-                <span className="surface-label">{dashboard.label}</span>
-              </button>
-            )}
-            <div className="kredy-mosaic__side">
-              {mobile && (
+        <div className="lg:col-span-7 relative z-[1]">
+          <div className="kredy-stage">
+            <div className="kredy-stage__tabs" role="tablist" aria-label="Surfaces Kredy">
+              {(
+                [
+                  { key: 'mobile' as const, label: 'Mobile', show: phoneSlides.length > 0 },
+                  { key: 'dashboard' as const, label: 'Dashboard', show: !!dashboard },
+                  { key: 'landing' as const, label: 'Landing', show: !!landing },
+                ] as const
+              )
+                .filter((t) => t.show)
+                .map((tab) => (
+                  <button
+                    key={tab.key}
+                    type="button"
+                    role="tab"
+                    aria-selected={surface === tab.key}
+                    className={`kredy-stage__tab${surface === tab.key ? ' is-active' : ''}`}
+                    onClick={() => setSurface(tab.key)}
+                  >
+                    {tab.label}
+                  </button>
+                ))}
+            </div>
+
+            <div className="kredy-stage__frame" key={surface}>
+              {surface === 'mobile' && phoneSlides.length > 0 && (
+                <ImageCarousel slides={phoneSlides} onOpenLightbox={onOpenLightbox} />
+              )}
+
+              {surface === 'dashboard' && dashboard && (
                 <button
                   type="button"
-                  className="kredy-mosaic__tile kredy-mosaic__tile--mobile media-zoom"
-                  onClick={() => onOpenLightbox(mobile.image, gallery)}
-                  aria-label={`Agrandir ${mobile.label}`}
+                  className="kredy-stage__shot"
+                  onClick={() => onOpenLightbox(dashboard.image, gallery)}
+                  aria-label={`Agrandir ${dashboard.label}`}
                 >
                   <LazyImage
-                    src={mobile.image}
-                    alt={`${project.title} — ${mobile.label}`}
+                    src={dashboard.image}
+                    alt={`${project.title} — ${dashboard.label}`}
                     className="w-full h-full object-cover object-top"
                   />
-                  <span className="surface-label">{mobile.label}</span>
+                  <span className="surface-label">{dashboard.label}</span>
                 </button>
               )}
-              {landing && (
+
+              {surface === 'landing' && landing && (
                 <button
                   type="button"
-                  className="kredy-mosaic__tile media-zoom"
+                  className="kredy-stage__shot"
                   onClick={() => onOpenLightbox(landing.image, gallery)}
                   aria-label={`Agrandir ${landing.label}`}
                 >

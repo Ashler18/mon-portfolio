@@ -38,11 +38,6 @@ export function DevProjectCard({ project, onOpenLightbox }: DevProjectCardProps)
             </svg>
           </div>
         </div>
-        {isKredy && (
-          <div className="absolute top-3 left-3">
-            <span className="badge-featured">Projet phare</span>
-          </div>
-        )}
       </div>
 
       <div className="p-4 sm:p-5 flex flex-col flex-1">

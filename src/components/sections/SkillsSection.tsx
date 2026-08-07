@@ -5,8 +5,9 @@ import {
   FileSpreadsheet,
   Headset,
   Heart,
+  Layers,
   Palette,
-  Sparkles,
+  PenTool,
   Zap,
   type LucideIcon,
 } from 'lucide-react';
@@ -17,7 +18,7 @@ import { SectionHeader } from '../layout/SectionHeader';
 
 const SKILL_ICONS: Record<SkillIconKey, LucideIcon> = {
   palette: Palette,
-  sparkles: Sparkles,
+  penTool: PenTool,
   code: Code,
   award: Award,
   zap: Zap,
@@ -36,7 +37,7 @@ export function SkillsSection({ sectionRef }: SkillsSectionProps) {
         id="skills-title"
         title="Compétences"
         subtitle="Un socle design, complété par le front-end, l’accessibilité et les outils du quotidien"
-        icon={<Sparkles className="w-6 h-6 sm:w-7 sm:h-7" strokeWidth={1.75} />}
+        icon={<Layers className="w-6 h-6 sm:w-7 sm:h-7" strokeWidth={1.75} />}
       />
 
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-5 mb-8 sm:mb-10">

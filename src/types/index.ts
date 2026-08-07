@@ -8,13 +8,13 @@ export type SectionId =
   | 'publications'
   | 'contact';
 
-export type ProjectFilter = 'Tout' | 'UX/UI' | 'Graphisme' | 'Développement';
+export type ProjectFilter = 'Tout' | 'UX/UI' | 'Développement';
 
 export type CreativeWorkType = 'design' | 'print' | 'logo' | 'web' | 'product';
 
 export type SkillIconKey =
   | 'palette'
-  | 'sparkles'
+  | 'penTool'
   | 'code'
   | 'award'
   | 'zap'
@@ -65,6 +65,8 @@ export interface UxProject {
   comingSoon?: boolean;
   comingSoonNote?: string;
   surfaces?: ProjectSurface[];
+  /** Écrans mobiles individuels (avec coque), pour le carrousel. */
+  phones?: ProjectSurface[];
   preview?: string;
   gallery?: string[];
 }

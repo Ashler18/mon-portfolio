@@ -17,7 +17,7 @@ export const skills: SkillGroup[] = [
   },
   {
     category: 'Outils de design',
-    icon: 'sparkles',
+    icon: 'penTool',
     items: [
       'Figma',
       'FigJam',

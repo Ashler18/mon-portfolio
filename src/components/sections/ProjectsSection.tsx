@@ -1,12 +1,10 @@
 import { useState, type RefObject } from 'react';
 import { Palette } from 'lucide-react';
 import { PROJECT_FILTERS } from '../../constants/nav';
-import { creativeWorks } from '../../data/creativeWorks';
 import { projects, projectsUX } from '../../data/projects';
 import type { ProjectFilter } from '../../types';
 import { SectionHeader } from '../layout/SectionHeader';
 import { ComingSoonCard } from '../projects/ComingSoonCard';
-import { CreativeThumbCard } from '../projects/CreativeThumbCard';
 import { DevProjectCard } from '../projects/DevProjectCard';
 import { KredyFeaturedCard } from '../projects/KredyFeaturedCard';
 import { UxCaseStudyCard } from '../projects/UxCaseStudyCard';
@@ -24,7 +22,6 @@ export function ProjectsSection({
   onOpenLightbox,
 }: ProjectsSectionProps) {
   const [activeFilter, setActiveFilter] = useState<ProjectFilter>('Tout');
-  const graphicWorks = creativeWorks.filter((w) => w.type !== 'design');
   const featured = projectsUX.find((p) => p.featured);
   const caseStudies = projectsUX.filter((p) => !p.featured && !p.comingSoon);
   const comingSoon = projectsUX.filter((p) => p.comingSoon);
@@ -34,7 +31,7 @@ export function ProjectsSection({
       <SectionHeader
         id="design-title"
         title="Projets sélectionnés"
-        subtitle="Études de cas UX/UI, créations visuelles et réalisations front-end"
+        subtitle="Études de cas UX/UI et réalisations front-end"
         icon={<Palette className="w-6 h-6 sm:w-7 sm:h-7" strokeWidth={1.75} />}
       />
 
@@ -73,26 +70,6 @@ export function ProjectsSection({
                 ))}
               </div>
             )}
-          </div>
-        </div>
-      )}
-
-      {(activeFilter === 'Tout' || activeFilter === 'Graphisme') && (
-        <div className="mb-12 sm:mb-14">
-          {activeFilter === 'Tout' && (
-            <h3 className="section-label">
-              <span className="w-8 h-px bg-orange-300 inline-block" aria-hidden="true" />
-              Communication visuelle
-            </h3>
-          )}
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4">
-            {graphicWorks.map((work) => (
-              <CreativeThumbCard
-                key={work.title}
-                work={work}
-                onOpenLightbox={onOpenLightbox}
-              />
-            ))}
           </div>
         </div>
       )}

@@ -1,4 +1,4 @@
-import { ExternalLink, Sparkles } from 'lucide-react';
+import { ExternalLink, Hourglass } from 'lucide-react';
 import type { UxProject } from '../../types';
 
 interface ComingSoonCardProps {
@@ -9,7 +9,10 @@ export function ComingSoonCard({ project }: ComingSoonCardProps) {
   const prototype = project.links.figma;
 
   return (
-    <article className="coming-soon-card group" aria-label={`${project.title} — étude de cas en préparation`}>
+    <article
+      className="coming-soon-card group"
+      aria-label={`${project.title} — étude de cas en préparation`}
+    >
       <div className="flex items-start justify-between gap-3 mb-4">
         <div>
           <h3 className="text-lg font-bold text-gray-900 tracking-tight group-hover:text-orange-600 transition-colors">
@@ -17,13 +20,10 @@ export function ComingSoonCard({ project }: ComingSoonCardProps) {
           </h3>
           <p className="text-orange-600/90 font-medium text-xs mt-1">{project.period}</p>
         </div>
-        <span className="badge-coming-soon">
-          {prototype ? 'Prototype dispo' : 'Coming Soon'}
-        </span>
       </div>
 
       <div className="coming-soon-visual mb-4" aria-hidden="true">
-        <Sparkles className="w-7 h-7 text-orange-500/80" strokeWidth={1.5} />
+        <Hourglass className="w-7 h-7 text-orange-500/80" strokeWidth={1.5} />
         <p className="text-sm font-semibold text-gray-800 mt-2">
           {prototype ? 'Étude de cas en préparation' : 'Refonte en cours'}
         </p>

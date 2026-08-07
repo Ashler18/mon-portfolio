@@ -1,4 +1,4 @@
-import { Sparkles } from 'lucide-react';
+import { ZoomIn } from 'lucide-react';
 import type { CreativeWork } from '../../types';
 import { LazyImage } from '../ui/LazyImage';
 
@@ -50,7 +50,7 @@ export function GalleryCard({ work, onOpenLightbox }: GalleryCardProps) {
 
         <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300">
           <div className="text-white text-center translate-y-3 group-hover:translate-y-0 transition-transform duration-300">
-            <Sparkles className="w-6 h-6 mx-auto mb-1.5" />
+            <ZoomIn className="w-6 h-6 mx-auto mb-1.5" strokeWidth={1.75} />
             <span className="text-sm font-bold tracking-wide">Voir plus</span>
           </div>
         </div>
